@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harshith | Terminal Resume</title>
+    <title>Harshith | Professional Terminal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -34,22 +34,23 @@
             <div class="flex flex-wrap gap-4 text-sm">
                 <a href="https://github.com/Harshith24" target="_blank" class="link-gold"><i class="fab fa-github"></i> GitHub</a>
                 <a href="https://linkedin.com/in/harshith-suresh-056079216/" target="_blank" class="link-gold"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="Harshith_Suresh_Resume.pdf" target="_blank" class="link-gold"><i class="fas fa-file-pdf"></i> PDF_Resume</a>
+                <a href="Harshith Suresh 2026 Final Resume .pdf" target="_blank" class="link-gold text-black bg-[#ceb888]"><i class="fas fa-file-pdf"></i> PDF_Resume</a>
             </div>
         </div>
 
         <div class="terminal-window rounded-lg overflow-hidden">
-            <div class="bg-[#222] px-4 py-2 flex items-center justify-between">
+            <div class="bg-[#222] px-4 py-2 flex items-center justify-between border-b border-[#333]">
                 <div class="flex gap-2">
                     <div class="w-3 h-3 rounded-full bg-red-500"></div>
                     <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div class="w-3 h-3 rounded-full bg-green-500"></div>
                 </div>
-                <span class="text-[10px] uppercase tracking-widest text-gray-400">Secure Shell Access</span>
+                <span class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">zsh — session: 2026</span>
             </div>
             
             <div id="terminal-body" class="p-6 h-[650px] overflow-y-auto text-sm md:text-base">
-                <div class="output-text text-[#ceb888]">System initialized. Welcome, Recruiter.</div>
+                <div class="output-text text-[#ceb888]">Session established. Terminal ready.</div>
+                <div class="output-text italic text-gray-500 text-xs">Features: 'Tab' for auto-complete | 'Up/Down' for command history.</div>
                 <div class="output-text">Type <span class="command-color">'help'</span> to see a list of commands.</div>
                 <div id="history"></div>
                 
@@ -63,95 +64,143 @@
 
     <script>
         const input = document.getElementById('command-input');
-        const history = document.getElementById('history');
+        const historyContainer = document.getElementById('history');
         const terminalBody = document.getElementById('terminal-body');
+
+        let cmdHistory = [];
+        let historyIndex = -1;
 
         const commands = {
             help: `Available commands:
                 <br>  - <span class='command-color'>experience</span> : Comprehensive work history
-                <br>  - <span class='command-color'>projects</span>   : Technical project deep-dive
-                <br>  - <span class='command-color'>skills --[arg]</span> : Usage: <span class='italic text-gray-400'>skills --languages</span>, <span class='italic text-gray-400'>--technology</span>, or <span class='italic text-gray-400'>--certifications</span>
+                <br>  - <span class='command-color'>projects</span>   : Technical project portfolio
+                <br>  - <span class='command-color'>skills</span>     : Usage: <span class='italic text-gray-400'>skills --languages</span>, <span class='italic text-gray-400'>--technology</span>, or <span class='italic text-gray-400'>--certifications</span>
                 <br>  - <span class='command-color'>courses</span>    : Relevant Purdue coursework
-                <br>  - <span class='command-color'>contact</span>    : Official email address
-                <br>  - <span class='command-color'>clear</span>      : Clear session history`,
+                <br>  - <span class='command-color'>contact</span>    : Professional email
+                <br>  - <span class='command-color'>clear</span>      : Clear screen`,
             
-            contact: "Email: <a href='mailto:harshiths2004@gmail.com' class='link-gold'>harshiths2004@gmail.com</a>",
+            contact: "Email: <a href='mailto:suresh72@purdue.edu' class='link-gold'>suresh72@purdue.edu</a>",
             
             courses: "Data Structures, Algorithms, Cybersecurity and Networks, Operating Systems<br>Minors: Applications In Data Science, Entrepreneurship and Innovation",
 
             experience: `
                 <br><span class="gold-label">Tesla Inc. | Software Engineering Intern</span> (Aug 2025 - Dec 2025)
-                <br>• Built real-time network topology and traceroute simulations to visualize device connections and metrics, reducing debug time 2x.
-                <br>• Architected text-to-query pipeline with LangGraph and fine-tuned SLM (LoRA) for ClickHouse and PostgreSQL.
-                <br>• Developed network audit tool for 100K+ devices, reducing audit time from hours to seconds.
-                <br>• Enhanced network scraper for routing tables, VLANs, and BGP peers across global network.
-                <br>• Automated tasks including password rotation, config updates, and ZTP.
+                <br>• Built real-time network topology and traceroute simulations to visualize physical device connections and metrics, packet flow, and alerts, helping teams identify congestion and debug network and hardware issues twice as fast.
+                <br>• Architected a text-to-query pipeline with LangGraph and a fine-tuned SLM through LoRA to generate queries for ClickHouse and PostgreSQL databases, enhancing real-time data visibility and accessibility across our network.
+                <br>• Developed a network audit tool to validate 100K+ network devices, reducing audit time from hours to seconds.
+                <br>• Enhanced network scraper to collect routing tables, vlans, port-channels, and BGP peers, from global Tesla network.
+                <br>• Performed network automation tasks on multiple vendors such as password rotation, config updates, and ZTP.
 
                 <br><br><span class="gold-label">Crowe LLP | Cybersecurity Consultant Intern</span> (June 2025 - Aug 2025)
-                <br>• Performed assessments and HITRUST compliance reviews for public sector clients.
-                <br>• Reviewed Active Directory, Entra ID, network architecture, and incident management.
-                <br>• Conducted pen-testing using Nmap, Nessus, Metasploit, and Wireshark.
-                <br>• Automated VM deployment using Ansible, Packer, and Bash.
+                <br>• Performed cybersecurity assessments and HITRUST compliance reviews for public sector clients.
+                <br>• Conducted technical reviews of Active Directory, Entra ID, network architecture, and incident management.
+                <br>• Conducted penetration testing leveraging tools such as Nmap, Nessus, Metasploit, and Wireshark.
+                <br>• Automated deployment of Kali Linux and Windows VMs using Ansible, Packer, and Bash.
 
                 <br><br><span class="gold-label">Mechasense.io | Software Engineering Intern</span> (Dec 2024 - April 2025)
-                <br>• Automated high-availability AWS deployment through Jenkins.
+                <br>• Designed script on AWS to automate deployment through Jenkins, OS and software upgrades.
                 <br>• Implemented ML models (KNN, XGBoost, Neural Networks); achieved 90% accuracy on HVAC failure detection.
-                <br>• Built synthetic data generation scripts for robust model training.
+                <br>• Built synthetic data generation script to supplement real-world datasets for robust model training.
 
                 <br><br><span class="gold-label">Munich Re | Security Engineering Intern</span> (June 2024 - Aug 2024)
-                <br>• Developed Malware Scanning pipeline on Azure using Defender for Cloud and Datadog.
+                <br>• Developed Malware Scanning pipeline on Azure with Defender for Cloud to isolate malicious files.
                 <br>• Configured IAM policies, security group rules, and subnets to prevent unauthorized access.
-                <br>• Deployed infrastructure via Terraform.
+                <br>• Deployed infrastructure including Private Endpoints and Storage through Terraform.
+                <br>• Contributed to the Developer Community by addressing gaps between Azure and Terraform documentation.
 
                 <br><br><span class="gold-label">SecureX.ai | Security Engineering Intern</span> (June 2022 - Aug 2022)
-                <br>• Built a BeautifulSoup based web-scraper to extract CVEs, CVSS scores, and exploit data.
-                <br>• Contextualized threats based on environment and asset criticality.
-                <br>• Containerized microservices using Docker and deployed to EKS cluster.`,
+                <br>• Built a BeautifulSoup based web-scraper to extract CVEs, CVSS scores, and exploit data from NVD and ExploitDB.
+                <br>• Contextualized threats based on environment and asset criticality to give us the true threat impact beyond CVSS scores.
+                <br>• Containerized microservices using Docker and deployed them to EKS cluster through Jenkins pipeline.`,
 
             projects: `
-                <br><span class="gold-label">Lecture Study Assistant</span>
-                <br>• Local Video RAG system using EasyOCR, Whisper, and PGvector.
-                <br>• Integrated Mistral LLM and Nomic Embedding model with FastAPI and Next.js.
+                <br><span class="gold-label">Lecture Study Assistant</span> (Dec 2025)
+                <br>• Local Video RAG system for analyzing lecture videos and creating quizzes and concept reviews to bolster productivity.
+                <br>• Integrated EasyOCR for image text extraction and Whisper for audio transcription and PGvector to store embeddings.
+                <br>• Employed Mistral LLM and Nomic Embedding model and integrated with FastAPI and Next.js.
 
-                <br><br><span class="gold-label">Library Management Project</span>
+                <br><br><span class="gold-label">Library Management Project</span> (Dec 2024)
                 <br>• Developed library management web app with Python, Flask, React, and SQLAlchemy.
-                <br>• Deployed on GCP App Engine with MySQL instance, using Nginx and Gunicorn.
-                <br>• Optimized app with normalization, indexes, and serializable concurrency.`
+                <br>• Deployed on GCP App Engine with MySQL instance, using Nginx and Gunicorn for scalable request handling.
+                <br>• Optimized app with normalization, indexes, and serializable concurrency to ensure conflict free borrowing.`
         };
 
         const skillsData = {
-            "--languages": "Python, Terraform, Java, Typescript, C, SQL, PromQL",
-            "--technology": "AWS, Azure, GCP, RDBMS, MongoDB, Neo4J, Docker, RAG, LangChain, Linux, CI/CD, Network Protocols, Next.js, React",
-            "--certifications": "AWS Solutions Architect Associate"
+            "--languages": "Python, Terraform, Java, Typescript, C, REST, SQL, PromQL, Git",
+            "--technology": "AWS, Azure, GCP, Docker, RAG, LangChain, Linux, CI/CD, Network Protocols, Next.js, React, RDBMS, MongoDB, Neo4J, Network Audit Tools",
+            "--certifications": "AWS Solutions Architect Associate, Dean's List and Semester Honors"
         };
 
+        const commandList = Object.keys(commands).concat(['clear', 'skills']);
+        const skillFlags = Object.keys(skillsData);
+
         input.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const currentVal = input.value.trim().toLowerCase();
+                const parts = currentVal.split(' ');
+
+                if (parts[0] === 'skills' && parts.length > 1) {
+                    const argPrefix = parts[1];
+                    const match = skillFlags.find(f => f.startsWith(argPrefix));
+                    if (match) input.value = `skills ${match}`;
+                } else {
+                    const match = commandList.find(c => c.startsWith(currentVal));
+                    if (match) input.value = match;
+                }
+            }
+
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex < cmdHistory.length - 1) {
+                    historyIndex++;
+                    input.value = cmdHistory[cmdHistory.length - 1 - historyIndex];
+                }
+            }
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    input.value = cmdHistory[cmdHistory.length - 1 - historyIndex];
+                } else {
+                    historyIndex = -1;
+                    input.value = '';
+                }
+            }
+
             if (e.key === 'Enter') {
-                const rawInput = input.value.trim().toLowerCase();
-                const [cmd, arg] = rawInput.split(' ');
+                const rawInput = input.value.trim();
+                const [cmd, arg] = rawInput.toLowerCase().split(' ');
+
+                if (rawInput !== "") {
+                    cmdHistory.push(rawInput);
+                    historyIndex = -1;
+                }
                 
                 const line = document.createElement('div');
-                line.innerHTML = `<span class="command-color">visitor@purdue:~$</span> ${input.value}`;
-                history.appendChild(line);
+                line.innerHTML = `<span class="command-color">visitor@purdue:~$</span> ${rawInput}`;
+                historyContainer.appendChild(line);
 
                 const result = document.createElement('div');
                 result.className = 'output-text mt-1 mb-4';
 
                 if (cmd === 'clear') {
-                    history.innerHTML = '';
+                    historyContainer.innerHTML = '';
                 } else if (cmd === 'skills') {
                     if (skillsData[arg]) {
                         result.innerHTML = `<span class='command-color'>Skills [${arg.replace('--','')}]:</span><br>${skillsData[arg]}`;
                     } else {
                         result.innerHTML = "Usage: skills --languages | skills --technology | skills --certifications";
                     }
-                    history.appendChild(result);
+                    historyContainer.appendChild(result);
+                } else if (cmd === 'resume') {
+                    window.open('Harshith Suresh 2026 Final Resume .pdf', '_blank');
                 } else if (commands[cmd]) {
                     result.innerHTML = commands[cmd];
-                    history.appendChild(result);
+                    historyContainer.appendChild(result);
                 } else if (rawInput !== "") {
                     result.innerHTML = `Command not found: ${cmd}. Type 'help' for options.`;
-                    history.appendChild(result);
+                    historyContainer.appendChild(result);
                 }
 
                 input.value = '';
