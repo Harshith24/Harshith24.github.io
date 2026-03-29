@@ -14,6 +14,7 @@
         .skill-tag { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
         .nav-link:hover { color: #60a5fa; transition: 0.3s; }
         section { padding-top: 5rem; padding-bottom: 5rem; }
+        .article-tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 0.65rem; font-weight: 600; font-family: monospace; letter-spacing: 0.04em; }
     </style>
 </head>
 <body class="bg-[#0f172a] text-slate-200 leading-relaxed">
@@ -37,9 +38,6 @@
         <div class="max-w-5xl mx-auto text-center md:text-left">
             <h2 class="text-blue-400 font-mono mb-4 text-lg">Purdue University | B.S. Computer Science (Cybersecurity Focus)</h2>
             <h1 class="text-6xl md:text-8xl font-bold text-white mb-6 tracking-tight">Harshith Suresh.</h1>
-            <!--<p class="text-2xl text-slate-400 max-w-3xl mb-10 leading-relaxed mx-auto md:mx-0">-->
-            <!--    Specializing in <span class="text-white">Cybersecurity & Network Infrastructure</span>. Currently optimizing observability for Tesla's global production networks and AI clusters.-->
-            <!--</p>-->
             <div class="flex gap-6 items-center justify-center md:justify-start">
                 <a href="https://www.linkedin.com/in/harshith-suresh-056079216/" target="_blank" class="text-3xl hover:text-blue-400 transition"><i class="fab fa-linkedin"></i></a>
                 <a href="https://github.com/harshith24" target="_blank" class="text-3xl hover:text-white transition"><i class="fab fa-github"></i></a>
@@ -267,6 +265,7 @@
         </div>
     </section>
 
+    <!-- BLOG SECTION — updated with Juice Shop card -->
     <section id="blog" class="bg-[#0b1221] px-6 py-24">
         <div class="max-w-5xl mx-auto">
             <div class="flex justify-between items-end mb-12">
@@ -277,12 +276,45 @@
                     <p class="text-slate-500">Documenting my engineering journey.</p>
                 </div>
             </div>
-            <div class="max-w-2xl">
-                <a href="https://medium.com/@harshiths2004/creating-function-app-with-multiple-functions-through-terraform-in-microsoft-azure-7f94b268e719" target="_blank" class="group block glass-card p-8 rounded-3xl border border-slate-700/50 hover:border-blue-500/50 transition duration-300">
-                    <h4 class="text-2xl font-bold text-white group-hover:text-blue-400 transition mb-3">Creating Function App with Multiple Functions through Terraform in Microsoft Azure</h4>
-                    <p class="text-slate-400 leading-relaxed mb-4">A technical walkthrough on modularizing Azure Function deployments using Infrastructure as Code (Terraform) for improved scalability and isolation.</p>
-                    <span class="text-blue-400 font-mono text-sm">Read on Medium →</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Juice Shop card — opens internal page -->
+                <a href="juiceshop.html" class="group block glass-card p-8 rounded-3xl border border-slate-700/50 hover:border-red-500/40 transition duration-300">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                            <i class="fas fa-bug text-red-400"></i>
+                        </div>
+                        <span class="text-xs font-mono text-slate-600">March 2026</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-white group-hover:text-red-400 transition mb-2">OWASP Juice Shop Vulnerability Writeup</h4>
+                    <p class="text-slate-400 leading-relaxed text-sm mb-5">Hands-on exploitation and remediation of 8 real web vulnerabilities — XSS variants, SQL injection, NoSQL injection, and broken access control.</p>
+                    <div class="flex flex-wrap gap-2 mb-5">
+                        <span class="article-tag" style="background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.25)">XSS</span>
+                        <span class="article-tag" style="background:rgba(251,146,60,0.12);color:#fb923c;border:1px solid rgba(251,146,60,0.25)">Injection</span>
+                        <span class="article-tag" style="background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.25)">SQLi</span>
+                        <span class="article-tag" style="background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.25)">Access Control</span>
+                    </div>
+                    <span class="text-red-400 font-mono text-sm group-hover:underline">Read writeup →</span>
                 </a>
+
+                <!-- Terraform / Medium card -->
+                <a href="https://medium.com/@harshiths2004/creating-function-app-with-multiple-functions-through-terraform-in-microsoft-azure-7f94b268e719" target="_blank" class="group block glass-card p-8 rounded-3xl border border-slate-700/50 hover:border-blue-500/50 transition duration-300">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                            <i class="fab fa-medium text-blue-400"></i>
+                        </div>
+                        <span class="text-xs font-mono text-slate-600">Medium</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-white group-hover:text-blue-400 transition mb-2">Creating Function App with Multiple Functions through Terraform in Microsoft Azure</h4>
+                    <p class="text-slate-400 leading-relaxed text-sm mb-5">A technical walkthrough on modularizing Azure Function deployments using Infrastructure as Code (Terraform) for improved scalability and isolation.</p>
+                    <div class="flex flex-wrap gap-2 mb-5">
+                        <span class="article-tag" style="background:rgba(59,130,246,0.12);color:#60a5fa;border:1px solid rgba(59,130,246,0.25)">Terraform</span>
+                        <span class="article-tag" style="background:rgba(59,130,246,0.12);color:#60a5fa;border:1px solid rgba(59,130,246,0.25)">Azure</span>
+                        <span class="article-tag" style="background:rgba(59,130,246,0.12);color:#60a5fa;border:1px solid rgba(59,130,246,0.25)">IaC</span>
+                    </div>
+                    <span class="text-blue-400 font-mono text-sm group-hover:underline">Read on Medium →</span>
+                </a>
+
             </div>
         </div>
     </section>
