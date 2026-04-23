@@ -119,7 +119,7 @@
 
         /* ─── HERO ─── */
         .hero {
-            min-height: 100vh;
+            min-height: 85vh;
             display: grid;
             grid-template-columns: 1fr 1fr;
             position: relative;
@@ -130,7 +130,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 6rem 4rem 6rem 6rem;
+            padding: 4rem 4rem 4rem 6rem;
             border-right: 1px solid var(--rule);
             position: relative;
         }
@@ -206,18 +206,13 @@
         .hero-right {
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            padding: 6rem 6rem 4rem 4rem;
+            justify-content: center;
+            padding: 4rem 5rem 4rem 4rem;
             background: var(--cream-mid);
-            position: relative;
+            gap: 2.5rem;
         }
 
-        .hero-cert {
-            position: absolute;
-            top: 5rem;
-            right: 5rem;
-            left: 4rem;
-        }
+        .hero-cert {}
 
         .cert-label {
             font-family: 'DM Mono', monospace;
@@ -258,9 +253,13 @@
 
         .cert-card p:last-child {
             font-family: 'Playfair Display', serif;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: var(--ink);
+        }
+
+        .cert-card.degree p:last-child {
+            font-size: 1.2rem;
         }
 
         .hero-pull {
@@ -319,9 +318,7 @@
         }
 
         .exp-grid {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 3.5rem;
+            display: block;
         }
 
         .exp-timeline {
@@ -721,7 +718,7 @@
         <div class="hero-left">
             <p class="hero-eyebrow">Purdue University · B.S. Computer Science</p>
             <h1 class="hero-name">Harshith<br><em>Suresh.</em></h1>
-            <p class="hero-desc">Security engineer and infrastructure generalist with a focus on building resilient systems — from network observability to cloud security at scale.</p>
+            <p class="hero-desc">Software Engineer at Tesla</p>
             <div class="hero-social">
                 <a href="https://www.linkedin.com/in/harshith-suresh-056079216/" target="_blank"><i class="fab fa-linkedin"></i></a>
                 <a href="https://github.com/harshith24" target="_blank"><i class="fab fa-github"></i></a>
@@ -730,6 +727,23 @@
             </div>
         </div>
         <div class="hero-right">
+            <div class="hero-cert">
+                <p class="cert-label"><i class="fas fa-graduation-cap"></i> Education</p>
+                <div class="cert-cards">
+                    <div class="cert-card degree" style="border-left-color: var(--terracotta);">
+                        <p style="color:var(--terracotta);">Purdue University · 2026</p>
+                        <p>B.S. Computer Science</p>
+                    </div>
+                    <div class="cert-card" style="border-left-color: var(--terracotta);">
+                        <p style="color:var(--terracotta);">Purdue Certificate</p>
+                        <p>Entrepreneurship &amp; Innovation</p>
+                    </div>
+                    <div class="cert-card" style="border-left-color: var(--terracotta);">
+                        <p style="color:var(--terracotta);">Purdue Certificate</p>
+                        <p>Applications in Data Science</p>
+                    </div>
+                </div>
+            </div>
             <div class="hero-cert">
                 <p class="cert-label"><i class="fab fa-aws"></i> AWS Certifications</p>
                 <div class="cert-cards">
@@ -743,9 +757,6 @@
                     </div>
                 </div>
             </div>
-            <blockquote class="hero-pull">
-                <strong>Five internships</strong> across security consulting, network infra, cloud engineering, and IoT — before graduating.
-            </blockquote>
         </div>
     </header>
 
@@ -758,18 +769,6 @@
         </div>
 
         <div class="exp-grid">
-            <aside class="exp-timeline">
-                <div class="exp-sidebar-item active">Tesla Inc.<br>Network Infra</div>
-                <div style="height:2rem;"></div>
-                <div class="exp-sidebar-item">Crowe LLP<br>Cybersecurity</div>
-                <div style="height:2rem;"></div>
-                <div class="exp-sidebar-item">Mechasense.io<br>SWE / ML</div>
-                <div style="height:2rem;"></div>
-                <div class="exp-sidebar-item">Munich Re<br>Security Eng.</div>
-                <div style="height:2rem;"></div>
-                <div class="exp-sidebar-item">SecureX.ai<br>Security Eng.</div>
-            </aside>
-
             <div class="exp-entries">
                 <div class="exp-entry fade-up">
                     <div class="exp-meta">
@@ -968,6 +967,45 @@
                     <span class="project-tag" style="color:#b45a6a;background:#f8eaec;">DeepLearning</span>
                     <span class="project-tag" style="color:#b45a6a;background:#f8eaec;">AWS</span>
                     <span class="project-tag" style="color:#b45a6a;background:#f8eaec;">Docker</span>
+                </div>
+            </div>
+
+            <div class="project-card fade-up">
+                <div class="project-top">
+                    <div class="project-icon" style="color:var(--terracotta);"><i class="fas fa-comment-dots"></i></div>
+                    <a href="https://github.com/Harshith24/insightme" class="project-gh"><i class="fab fa-github"></i></a>
+                </div>
+                <h3 class="project-name">InsightMe</h3>
+                <div class="project-desc">
+                    Local-only analytics for iMessage, Call History, and macOS Contacts — a Spotify Wrapped for your messages and calls. Runs entirely on-device as a pip-installable Python package. Install with <code style="font-family:'DM Mono',monospace;font-size:0.78rem;background:var(--cream-dark);border:none;padding:2px 6px;border-radius:2px;color:var(--ink-mid);">pip install insightme</code>, launch with <code style="font-family:'DM Mono',monospace;font-size:0.78rem;background:var(--cream-dark);border:none;padding:2px 6px;border-radius:2px;color:var(--ink-mid);">insightme</code>. Requires Python 3.11+ and Full Disk Access.
+                </div>
+                <div class="project-tags">
+                    <span class="project-tag">macOS</span>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">SQLite</span>
+                    <span class="project-tag">Local-only</span>
+                </div>
+            </div>
+
+            <div class="project-card fade-up">
+                <div class="project-top">
+                    <div class="project-icon" style="color:var(--sage);"><i class="fas fa-plane"></i></div>
+                    <span></span>
+                </div>
+                <h3 class="project-name">Purdue Aerial Robotics Team</h3>
+                <div class="project-desc">
+                    <ul style="list-style:none;display:flex;flex-direction:column;gap:0.45rem;">
+                        <li style="padding-left:1.1rem;position:relative;"><span style="position:absolute;left:0;color:var(--sage);">—</span>Synthetic data generation from flight data and OpenCV for image processing.</li>
+                        <li style="padding-left:1.1rem;position:relative;"><span style="position:absolute;left:0;color:var(--sage);">—</span>CNN model with TensorFlow; tracked model performance and hyperparameter tuning with Neptune AI.</li>
+                        <li style="padding-left:1.1rem;position:relative;"><span style="position:absolute;left:0;color:var(--sage);">—</span>Optimized model for NVIDIA Jetson Nano using TensorRT SDK.</li>
+                        <li style="padding-left:1.1rem;position:relative;"><span style="position:absolute;left:0;color:var(--sage);">—</span>Integrated with Pixhawk flight controller.</li>
+                    </ul>
+                </div>
+                <div class="project-tags">
+                    <span class="project-tag" style="color:var(--sage);background:var(--sage-pale);">TensorFlow</span>
+                    <span class="project-tag" style="color:var(--sage);background:var(--sage-pale);">TensorRT</span>
+                    <span class="project-tag" style="color:var(--sage);background:var(--sage-pale);">OpenCV</span>
+                    <span class="project-tag" style="color:var(--sage);background:var(--sage-pale);">Robotics</span>
                 </div>
             </div>
         </div>
